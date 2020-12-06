@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>News Explorer</title>
+  <link rel="stylesheet" href="/pages/index.css">
+</head>
+
+<body class="page">
+  <div class="page__top">
+  <header class="header">
+    <div class="header__wrapper">
+    <a href="#" class="logo header__logo">NewsExplorer</a>
+    <nav class="header__menu">
+      <ul class="main-menu">
+        <li class="main-menu__item"><a class="main-menu__link main-menu__link_active" href="#">Home</a></li>
+        <li class="main-menu__item"><a class="main-menu__link" href="/articles">Saved articles</a></li>
+      </ul>
+      <button class="btn btn__header btn__header_logout">Elise Elise</button>
+    </nav>
+  </div>
+  </header>
+  <section class="search">
+    <h1 class="search__heading">What's going on in the world?</h1>
+    <p>Find the latest news on any topic and save them in your personal account.</p>
+    <form action="#" method="post">
+      <input type="text" placeholder="Enter topic">
+      <button type="button" name="button" value="Search"></button>
+    </form>
+  </section>
+  </div>
+
+  <main class="main">
+    <section class="search-result">
+      <h2 class="search-result__heading">Search results</h2>
+      <ul class="search-result__gallery gallery">
+      </ul>
+      <button type="button" class="btn search-result__btn" value="Show more"></button>
+    </section>
+    <section class="about">
+      <h2 class="about__heading">About the author</h2>
+      <img class="about__avatar" src="./images/author.jpg" alt="Author picture">
+      <p class="about__text">This block describes the project author. Here you should indicate your name, what you do, and which development technologies you know.</p>
+      <p class="about__text">You can also talk about your experience with Practicum, what you learned there, and how you can help potential customers.</p>
+    </section>
+  </main>
+  <footer class="footer">
+    <p class="footer__copyright"> © 2020 Supersite, Powered by News API</p>
+      <ul class="foo-menu">
+        <li class="foo-menu__item"><a href="#" class="foo-menu__icon foo-menu_active">Home</a></li>
+        <li class="foo-menu__item"><a href="#" class="foo-menu__icon">Practicum by Yandex</a></li>
+        <li class="foo-menu__item"><a href="#" class="foo-menu__icon"></a></li>
+        <li class="foo-menu__item"><a href="#" class="foo-menu__icon"></a></li>
+      </ul>
+  </footer>
+
+  <!-- invisible blocks -->
+  <!-- change profile information -->
+  <div class="popup">
+    <div class="popup__container">
+      <span class="popup__close">+</span>
+      <form action="#" method="post" class="form edit-profile" novalidate>
+        <h2 class="edit-profile__heading">Edit profile</h2>
+
+        <input type="text" name="name" id="name-input" class="form__input edit-profile__name" placeholder="Name" minlength="2" maxlength="40" required>
+        <span id="name-input-error" class="form__input-error"></span>
+
+        <input type="text" name="job" id="job-input" class="form__input edit-profile__job" placeholder="About me" minlength="2" maxlength="200" required>
+        <span id="job-input-error" class="form__input-error"></span>
+
+        <input type="submit" name="save" class="btn form__submit edit-profile__save" value="Save">
+      </form>
+    </div>
+  </div>
+  <!-- add a new card -->
+  <div class="popup">
+    <div class="popup__container">
+      <span class="popup__close">+</span>
+      <form action="#" method="post" class="form add-card" novalidate>
+        <h2 class="add-card__heading">New place</h2>
+
+        <input type="text" name="name" id="title-input" class="form__input add-card__title" placeholder="Title" minlength="2" maxlength="30" required>
+        <span id="title-input-error" class="form__input-error"></span>
+        <input type="url" name="link" id="link-input" class="form__input add-card__image-link" placeholder="Image URL" required>
+        <span id="link-input-error" class="form__input-error"></span>
+        <input type="submit" name="create-card" class="btn form__submit add-card__create" value="Create">
+      </form>
+    </div>
+  </div>
+  <!-- show a card -->
+  <div class="popup popup_dark">
+    <div class="popup__container popup__container_photo">
+      <span class="popup__close">+</span>
+      <figure class="photo">
+        <img class="photo__item" src="#" alt="">
+        <figcaption class="photo__title"></figcaption>
+      </figure>
+    </div>
+  </div>
+  <!-- delete confirmation -->
+  <div class="popup">
+    <div class="popup__container">
+      <span class="popup__close">+</span>
+      <form action="#" method="post" class="form delete-card" novalidate>
+        <h2 class="delete-card__heading">Are you sure?</h2>
+        <input type="submit" name="confirm" class="btn form__submit delete-card__submit" value="Yes">
+      </form>
+    </div>
+  </div>
+  <!-- change profile picture -->
+  <div class="popup">
+    <div class="popup__container">
+      <span class="popup__close">+</span>
+      <form action="#" method="post" class="form change-avatar" novalidate>
+        <h2 class="change-avatar__heading">Change profile picture</h2>
+        <input type="url" name="avatar-link" id="avatar-input" class="form__input change-avatar__link" placeholder="Image URL" required>
+        <span id="avatar-input-error" class="form__input-error"></span>
+        <input type="submit" name="save" class="btn form__submit change-avatar__save" value="Save">
+      </form>
+    </div>
+  </div>
+
+  <template id="card">
+    <li class="gallery__item">
+      <button class="btn gallery__icon-trash"></button>
+      <div class="gallery__bottom">
+        <h2 class="gallery__title"></h2>
+        <div class="gallery__like-wrapper">
+          <button class="btn gallery__like"></button>
+          <div class="gallery__score"></div>
+        </div>
+      </div>
+    </li>
+  </template>
+</body>
+
+</html>
