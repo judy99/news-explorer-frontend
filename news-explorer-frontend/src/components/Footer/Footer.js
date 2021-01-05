@@ -1,6 +1,8 @@
 import React from 'react';
 import {BottomMenuItems} from '../Navigation/BottomMenuItems.js';
 import {SocialMenuItems} from '../Navigation/SocialMenuItems.js';
+import { Link } from 'react-router-dom';
+
 
 function Footer () {
   var today = new Date();
@@ -12,7 +14,7 @@ function Footer () {
         { BottomMenuItems.map((item, index) => {
           return (
             <li key={index} className={item.cWrapper}>
-              <a className={item.cLink} href={item.url}>{item.title}</a>
+              <Link className={item.cLink} to={item.url}>{item.title}</Link>
             </li>
           );
         }) }
@@ -21,7 +23,7 @@ function Footer () {
         { SocialMenuItems.map((item, index) => {
           return (
             <li key={index} className={item.cWrapper}>
-              <a className={item.cLink} href={item.url}></a>
+              <Link className={item.cLink} to={item.url}></Link>
             </li>
           );
         }) }

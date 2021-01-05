@@ -18,8 +18,6 @@ function MainPage (props) {
       setMobileMenuActive={props.setMobileMenuActive}
       isMobileMenuIcon={props.isMobileMenuIcon}
       setMobileMenuIcon={props.setMobileMenuIcon}
-
-
       />
       <Search />
       <Main loggedIn={props.loggedIn} newsCards={props.newsCards} isMainPage={props.isMainPage}/>

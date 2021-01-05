@@ -18,6 +18,8 @@ function App() {
   const [isSingUpPopup, setSignUpPopup] = React.useState(false);
   const [isMobileMenuActive, setMobileMenuActive] = React.useState(false);
   const [isMobileMenuIcon, setMobileMenuIcon] = React.useState(true);
+  const [keywordArray, setKeywordArray] = React.useState(['Nature', 'Yellowstone', 'Photographer', 'Animals', 'Birds']);
+  const [articleNumber, setArticleNumber] = React.useState(keywordArray.length);
 
   const News = [
     {
@@ -102,6 +104,10 @@ function App() {
     setMobileMenuIcon(false);
   }
 
+  // function keywordArrayToString () {
+  //   return keywordArray.join(',');
+  // }
+
   return (
   <BrowserRouter>
   <Switch>
@@ -135,6 +141,9 @@ function App() {
       setMobileMenuActive={setMobileMenuActive}
       isMobileMenuIcon={isMobileMenuIcon}
       setMobileMenuIcon={setMobileMenuIcon}
+      articleNumber={articleNumber}
+      keywordArray={keywordArray}
+      newsCards={News}
     />
 
     < /CurrentUserContext.Provider>

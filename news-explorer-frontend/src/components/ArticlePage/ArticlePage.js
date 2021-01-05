@@ -1,5 +1,8 @@
 import React from 'react';
 import Header from '../Header/Header.js';
+import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader.js';
+import NewsCardList from '../NewsCardList/NewsCardList.js';
+
 
 function ArticlePage(props) {
   return (
@@ -11,10 +14,24 @@ function ArticlePage(props) {
       setMobileMenuActive={props.setMobileMenuActive}
       isMobileMenuIcon={props.isMobileMenuIcon}
       setMobileMenuIcon={props.setMobileMenuIcon}
-      
+
       />
-      <h1>ArticlePage</h1>
+      <SavedNewsHeader
+      articleNumber={props.articleNumber}
+      keywordArray={props.keywordArray}
+      keywordArrayNumber={props.keywordArrayNumber}  />
+
+      <main className="main">
+      <div className="search-results">
+      <NewsCardList
+      newsCards={props.newsCards}
+      onCardDelete={props.onCardDelete}
+      isMainPage={props.isMainPage} />
+      </div>
+      </main>
+
     </div>
+
   );
 }
 

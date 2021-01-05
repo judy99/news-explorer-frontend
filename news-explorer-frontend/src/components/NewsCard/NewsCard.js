@@ -16,7 +16,6 @@ function NewsCard (props) {
         </>
       )
     }
-
     { (props.isMainPage && !props.loggedIn) &&
       (
         <>
@@ -28,7 +27,6 @@ function NewsCard (props) {
       </>
     )
     }
-
     </div>
     <div className="news__post">
       <div className="news__date">{props.card.date}</div>

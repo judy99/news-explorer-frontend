@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
 
 function PopupWithForm (props) {
   return (
@@ -16,7 +14,7 @@ function PopupWithForm (props) {
 
             <input type="submit" name={props.name} className={`btn form__btn-submit popup-form__btn-submit ${props.name}__btn-submit form__submit_disabled`} value={props.title} />
           </form>
-          <span className="popup-form__bottom">or <Link className='link popup-form__link' onClick={props.onClickLink}>{props.linkName}</Link></span>
+          <span className="popup-form__bottom">or <input type="button" className={`link popup-form__link`} onClick={props.onClickLink} value={props.linkName} /></span>
           </div>
           </div>
         </div>

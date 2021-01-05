@@ -432,10 +432,16 @@
   line-height: 18px;
   text-align: center;
   height: 40px;
-  /* overflow: hidden; */
+  overflow: hidden;
   box-sizing: border-box;
   white-space: nowrap;
+  display: none;
 }
+
+.news__icon-save:hover .news__tooltip {
+  display: block;
+}
+
 
 .news__post {
   padding: 0 24px 24px;
