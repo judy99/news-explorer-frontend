@@ -30,7 +30,7 @@ function Header (props) {
     style={ (props.isMobileMenuActive && !props.isSingInPopup) ? {backgroundColor:"#000"} : {backgroundColor:"transparent"}}
     >
     <div className="header__wrapper">
-      <a href="/" className={`logo header__logo ${!props.isMainPage && 'logo_theme_light' } `}  >NewsExplorer</a>
+      <NavLink to="/" className={`logo header__logo ${!props.isMainPage && 'logo_theme_light' } `}  >NewsExplorer</NavLink>
       <div className={`burger-menu ${(props.isMobileMenuActive) ? 'burger-menu_active' : ''} ${!props.isMainPage && 'burger-menu_theme_light' }`}
         onClick={handleHamburgerMenuClick}
         style={ !props.isMobileMenuIcon ? {display:'none'} : {} }

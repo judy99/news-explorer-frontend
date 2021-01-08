@@ -1,13 +1,13 @@
 export const BottomMenuItems = [
   {
     title: "Home",
-    url: "#",
+    url: "/",
     cLink: "menu__link foo-menu__link",
     cWrapper: "menu__item foo-menu__item"
   },
   {
     title: "Practicum by Yandex",
-    url: "#",
+    url: "/",
     cLink: "menu__link foo-menu__link",
     cWrapper: "menu__item foo-menu__item"
   }

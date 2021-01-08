@@ -1,8 +1,9 @@
 import React from 'react';
 
 function PopupWithForm (props) {
+
   return (
-    <div className={`popup ${(props.isSingInPopup || props.isSingUpPopup) && 'popup_opened'}`}>
+    <div className={`popup ${(props.isSingInPopup || props.isSingUpPopup) && 'popup_opened'}`} >
         <div className="popup__container">
           <span className="popup__close" onClick={props.onPopupClose}>+</span>
           <div className='main-popup'>

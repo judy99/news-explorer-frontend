@@ -100,12 +100,14 @@
     font-size: 22px;
     line-height: 24px;
     max-height: 72px;
+    height: 72px;
   }
 
   .news__text {
     margin: 0 0 12px 0;
     height: 88px;
     max-height: 88px;
+    min-height: 88px;
   }
 
   .news {
@@ -205,6 +207,7 @@
 
 .news__title {
   max-height: 48px;
+  height: 48px;
 }
 }
 
