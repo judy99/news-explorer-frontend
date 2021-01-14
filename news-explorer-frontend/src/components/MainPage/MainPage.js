@@ -1,11 +1,13 @@
 import React from 'react';
 import Header from '../Header/Header.js';
 import Search from '../Search/Search.js';
-import Main from '../Main/Main.js';
+import SearchResult from '../SearchResult/SearchResult.js';
+import About from '../About/About.js';
 import PopupSignIn from '../PopupSignIn/PopupSignIn.js';
 import PopupSignUp from '../PopupSignUp/PopupSignUp.js';
 import PopupInfo from '../PopupInfo/PopupInfo.js';
-
+import Preloader from '../Preloader/Preloader.js';
+import NotFound from '../NotFound/NotFound.js';
 
 function MainPage (props) {
   return (
@@ -19,18 +21,20 @@ function MainPage (props) {
       isMobileMenuActive={props.isMobileMenuActive}
       setMobileMenuActive={props.setMobileMenuActive}
       isMobileMenuIcon={props.isMobileMenuIcon}
-      setMobileMenuIcon={props.setMobileMenuIcon}
-
-      />
-      <Search />
-      <Main loggedIn={props.loggedIn} newsCards={props.newsCards} isMainPage={props.isMainPage}/>
+      setMobileMenuIcon={props.setMobileMenuIcon} />
+      <Search onSubmitSearch={props.onSubmitSearch} />
+      { props.isSearching && <Preloader /> }
+      { props.isNotFound ? <NotFound /> :
+        <SearchResult loggedIn={props.loggedIn} newsCards={props.newsCards} isMainPage={props.isMainPage} />
+      }
+      <About />
     </div>
 
-    { props.isSingInPopup &&
+  { props.isSingInPopup &&
     <PopupSignIn
     onPopupClose={props.onPopupClose}
     handleClickLinkSignup={props.handleClickLinkSignup}
-    onSubmit={props.onLogin}
+    onLogin={props.onLogin}
     submitBtnState={props.submitBtnState}
     setSubmitBtnState = {props.setSubmitBtnState}
 
@@ -41,17 +45,15 @@ function MainPage (props) {
     passwordInput={props.passwordInput}
 
     handleChangeEmail={props.handleChangeEmail}
-    handleChangePassword={props.handleChangePassword}
-     >
+    handleChangePassword={props.handleChangePassword} >
     </PopupSignIn>
-    }
+  }
 
-
-    { props.isSingUpPopup &&
+  { props.isSingUpPopup &&
     <PopupSignUp
     onPopupClose={props.onPopupClose}
     handleClickLinkSignin={props.handleClickLinkSignin}
-    onSubmit={props.handleRegistration}
+    handleRegistration={props.handleRegistration}
     submitBtnState={props.submitBtnState}
     emailInputError={props.emailInputError}
     passwordInputError={props.passwordInputError}
@@ -63,10 +65,7 @@ function MainPage (props) {
 
     handleChangeEmail={props.handleChangeEmail}
     handleChangePassword={props.handleChangePassword}
-    handleChangeUsername={props.handleChangeUsername}
-
- >
-
+    handleChangeUsername={props.handleChangeUsername} >
     </PopupSignUp>
   }
 

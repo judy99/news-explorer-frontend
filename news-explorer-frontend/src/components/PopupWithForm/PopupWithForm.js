@@ -2,13 +2,24 @@ import React from 'react';
 
 function PopupWithForm (props) {
 
+  const resetForm = (e) => {
+    e.currentTarget.reset();
+  };
+
+  const handleSubmit = (e) => {
+      e.preventDefault();
+      props.onSubmit();
+      resetForm(e);
+    };
+
+
   return (
     <div className='popup popup_opened' >
         <div className="popup__container">
           <span className="popup__close" onClick={props.onPopupClose}>+</span>
           <div className='main-popup'>
           <div className='main-popup__container'>
-          <form title={props.title} className={`form popup-form ${props.name}`} name={props.name} id={props.name} onSubmit={props.submitBtnState ? props.onSubmit : undefined } >
+          <form title={props.title} className={`form popup-form ${props.name}`} name={props.name} id={props.name} onSubmit={props.submitBtnState ? handleSubmit : undefined } >
             <h2 className="popup-form__heading">{props.title}</h2>
 
             {props.children}

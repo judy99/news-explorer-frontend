@@ -7,9 +7,6 @@ import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 
 function Header (props) {
   const currentUser = React.useContext(CurrentUserContext);
-  // const [clicked, setClicked] = React.useState(false);
-  // const [isMobileMenuActive, setMobileMenuActive] = React.useState(false);
-
   const btnStyleLogout = 'btn btn-header btn-header_login btn__header';
   const btnStyleLogin = 'btn btn-header btn-header_logout btn__header btn__header_logout';
   const btnThemeLight = 'btn-header_theme_light';
@@ -20,7 +17,6 @@ function Header (props) {
 
   function handleMenuItemClick () {
     props.setMobileMenuActive(false);
-    // props.setMobileMenuIcon(false);
   }
 
   return (
@@ -63,7 +59,6 @@ function Header (props) {
         {props.loggedIn ? <Button btnStyle={`${btnStyleLogin} ${!props.isMainPage && btnThemeLight}` } onClick={props.onLogoutBtn}>{currentUser.username}</Button> :
         <Button btnStyle={`${btnStyleLogout} ${!props.isMainPage && btnThemeLight}` } onClick={props.onLoginBtn}>Sign in</Button>
         }
-
       </nav>
     </div>
   </header>

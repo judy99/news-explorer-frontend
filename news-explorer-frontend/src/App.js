@@ -24,6 +24,9 @@ function App() {
   const [isRegistrationSuccess, setRegistrationSuccess] = React.useState(false);
   const [isRegistrationPopup, setRegistrationPopup] = React.useState(false);
   const [isPopup, setPopup] = React.useState(isSingInPopup || isSingUpPopup || isRegistrationPopup);
+  const [isSearching, setSearching] = React.useState(false);
+  const [isNotFound, setNotFound] = React.useState(false);
+
 
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -33,7 +36,6 @@ function App() {
   const [emailInputError, setEmailInputError] = React.useState('');
   const [passwordInputError, setPasswordInputError] = React.useState('');
   const [formError, setFormError] = React.useState('');
-  const [isErrorOnForm, setErrorOnForm] = React.useState(false);
 
   const [nameInput, setNameInput] = React.useState('');
   const [passwordInput, setPasswordInput] = React.useState('');
@@ -46,6 +48,8 @@ function App() {
   const MIN_LENGTH_NAME = 2;
   const MIN_LENGTH_PASSWORD = 8;
 
+  const testUser1 = {username: 'EliseTest1', login: 'elisetest1@test.com'};
+  const testUser2 = {username: 'Elise2', login: 'elise2@test.com'};
 
   const News = [
     {
@@ -94,6 +98,7 @@ function App() {
 
   ];
 
+// logout the website
   function handleLogoutBtn () {
     setLoggedIn(false);
     setCurrentUser(null);
@@ -101,6 +106,7 @@ function App() {
     setMobileMenuIcon(true);
   };
 
+// open sign in popup
   function handleLoginBtn () {
     setSignInPopup(true);
     setMobileMenuActive(false);
@@ -108,16 +114,15 @@ function App() {
     setMobileMenuIcon(false);
   };
 
-  function handleLogin (e) {
-    e.preventDefault();
-    if (submitBtnState) {
+// login to the website
+  function handleLogin () {
     handlePopupClose();
     setMobileMenuActive(false);
     setMobileMenuIcon(true);
     setLoggedIn(true);
-    setCurrentUser({username: 'EliseTest', login: 'elisetest@test.com'});
+    setCurrentUser(testUser1);
   }
-  }
+
 
   function handlePopupClose () {
     setSignInPopup(false);
@@ -131,7 +136,7 @@ function App() {
     setNameInput('');
     setNameInputError('');
     setSubmitBtnState(false);
-    setErrorOnForm(false);
+    // resetForm();
   }
 
   const validateName = (input) => {
@@ -175,7 +180,7 @@ function App() {
   }
 
 // todo: while registering
-  function handleCheckUsername (e) {
+  function checkUsername () {
     // check if the username already exist
     // get username if it does not exist in db
     if (username) {
@@ -209,7 +214,7 @@ function App() {
   React.useEffect( () => setPopup(isSingInPopup || isSingUpPopup || isRegistrationPopup)
 , [isSingInPopup, isSingUpPopup, isRegistrationPopup]);
 
-
+// click link on popup
   function handleClickLinkSignup () {
     handlePopupClose();
     setSignUpPopup(true);
@@ -218,9 +223,9 @@ function App() {
     setSubmitBtnState(false);
     // fetch
     // setRegistrationSuccess(true);
-
   }
 
+// click link on popup
   function handleClickLinkSignin () {
     handlePopupClose();
     setSignInPopup(true);
@@ -228,14 +233,29 @@ function App() {
     setSubmitBtnState(false);
   }
 
-
-// TODO
-  function handleRegistration (e) {
+// click on Sign Up button on Sign Up popup
+  function handleRegistration () {
     // get info from server successfully (user info)
-      e.preventDefault();
+      // e.preventDefault();
       setSignUpPopup(false);
       setRegistrationPopup(true);
       setRegistrationSuccess(true);
+  }
+
+// click to search by keyword
+  function handleSubmitSearch (e) {
+    e.preventDefault();
+    setSearching(true);
+    setTimeout(function() {
+      setSearching(false);
+      setNewsCards(News);
+      // setNotFound(true);
+    }
+    , 3000);
+
+
+    // call API
+
   }
 
   React.useEffect(() => {
@@ -283,7 +303,8 @@ function App() {
     onLoginBtn={handleLoginBtn}
     onLogoutBtn={handleLogoutBtn}
     onLogin={handleLogin}
-    newsCards={News}
+    newsCards={newsCards}
+    // newsCards={News}
     isMainPage={isMainPage}
     isSingInPopup={isSingInPopup}
     isSingUpPopup={isSingUpPopup}
@@ -313,6 +334,10 @@ function App() {
     emailInput={emailInput}
 
     submitBtnState={submitBtnState}
+
+    isSearching={isSearching}
+    onSubmitSearch={handleSubmitSearch}
+    isNotFound={isNotFound}
     />
     </Route>
 
