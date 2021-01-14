@@ -1,10 +1,10 @@
-import React from 'react';
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import React, {useRef} from 'react';
+import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom';
 import MainPage from './components/MainPage/MainPage.js';
 import ArticlePage from './components/ArticlePage/ArticlePage.js';
-import ProtectedRoute from './components/ProtectedRoute';
+// import ProtectedRoute from './components/ProtectedRoute';
 import {CurrentUserContext} from './contexts/CurrentUserContext.js';
-import Header from './components/Header/Header.js';
+// import Header from './components/Header/Header.js';
 import Footer from './components/Footer/Footer.js';
 
 
@@ -25,6 +25,26 @@ function App() {
   const [isRegistrationPopup, setRegistrationPopup] = React.useState(false);
   const [isPopup, setPopup] = React.useState(isSingInPopup || isSingUpPopup || isRegistrationPopup);
 
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState('');
+
+  const [nameInputError, setNameInputError] = React.useState('');
+  const [emailInputError, setEmailInputError] = React.useState('');
+  const [passwordInputError, setPasswordInputError] = React.useState('');
+  const [formError, setFormError] = React.useState('');
+  const [isErrorOnForm, setErrorOnForm] = React.useState(false);
+
+  const [nameInput, setNameInput] = React.useState('');
+  const [passwordInput, setPasswordInput] = React.useState('');
+  const [emailInput, setEmailInput] = React.useState('');
+
+  const [submitBtnState, setSubmitBtnState] = React.useState(false);
+
+  const firstRender = useRef(true);
+
+  const MIN_LENGTH_NAME = 2;
+  const MIN_LENGTH_PASSWORD = 8;
 
 
   const News = [
@@ -84,21 +104,19 @@ function App() {
   function handleLoginBtn () {
     setSignInPopup(true);
     setMobileMenuActive(false);
-    setLoggedIn(true);
+    // setLoggedIn(true);
     setMobileMenuIcon(false);
-    setCurrentUser('Elise123');
   };
 
-  function handleLogin () {
+  function handleLogin (e) {
+    e.preventDefault();
+    if (submitBtnState) {
     handlePopupClose();
     setMobileMenuActive(false);
     setMobileMenuIcon(true);
+    setLoggedIn(true);
+    setCurrentUser({username: 'EliseTest', login: 'elisetest@test.com'});
   }
-
-  function handleLogout () {
-    setLoggedIn(false);
-    setCurrentUser(null);
-    setMobileMenuIcon(true);
   }
 
   function handlePopupClose () {
@@ -106,6 +124,65 @@ function App() {
     setSignUpPopup(false);
     setMobileMenuIcon(true);
     setRegistrationPopup(false);
+    setEmailInput('');
+    setEmailInputError('');
+    setPasswordInput('');
+    setPasswordInputError('');
+    setNameInput('');
+    setNameInputError('');
+    setSubmitBtnState(false);
+    setErrorOnForm(false);
+  }
+
+  const validateName = (input) => {
+    return (input.length < MIN_LENGTH_NAME) ? false : true;
+  }
+  //
+  const validateEmail = (input) => {
+    return (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(input.trim())) ? false : true;
+  }
+  //
+  const validatePassword = (input) => {
+    return (input.length < MIN_LENGTH_PASSWORD) ? false : true;
+  }
+
+  function handleChangeEmail (e) {
+    if (validateEmail(e.target.value)) {
+      setEmailInput(e.target.value);
+      setEmailInputError('');
+    } else {
+      setEmailInputError('Invalid email.');
+    }
+  }
+
+  function handleChangePassword (e) {
+    if (validatePassword(e.target.value)) {
+      setPasswordInput(e.target.value);
+      setPasswordInputError('');
+    } else {
+      setPasswordInputError('Invalid password.');
+    }
+  }
+
+  function handleChangeUsername (e) {
+    console.log(e.target.value);
+    if (validateName(e.target.value)) {
+      setNameInput(e.target.value);
+      setNameInputError('');
+    } else {
+      setNameInputError('Invalid username.');
+    }
+  }
+
+// todo: while registering
+  function handleCheckUsername (e) {
+    // check if the username already exist
+    // get username if it does not exist in db
+    if (username) {
+      setFormError('');
+    } else {
+      setFormError('This username is not available.');
+    }
   }
 
   React.useEffect(() => {
@@ -128,22 +205,27 @@ function App() {
     return () => window.removeEventListener('keydown', handleEscPressed);
   }, [isPopup]);
 
+// ???
   React.useEffect( () => setPopup(isSingInPopup || isSingUpPopup || isRegistrationPopup)
 , [isSingInPopup, isSingUpPopup, isRegistrationPopup]);
 
 
   function handleClickLinkSignup () {
+    handlePopupClose();
     setSignUpPopup(true);
-    setSignInPopup(false);
+    // setSignInPopup(false);
     setMobileMenuIcon(false);
+    setSubmitBtnState(false);
     // fetch
-    setRegistrationSuccess(true);
+    // setRegistrationSuccess(true);
+
   }
 
-  function handleClickLinkSignin (e) {
+  function handleClickLinkSignin () {
     handlePopupClose();
     setSignInPopup(true);
     setMobileMenuIcon(false);
+    setSubmitBtnState(false);
   }
 
 
@@ -156,17 +238,51 @@ function App() {
       setRegistrationSuccess(true);
   }
 
+  React.useEffect(() => {
+    // skip validation on first render
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    const validateSignInForm = () => {
+      return ((passwordInputError !== '' || emailInputError !== '') || (passwordInput === '' || emailInput === ''));
+    }
+
+    const validateSignUpForm = () => {
+      return ((passwordInputError !== '' || emailInputError !== '' || nameInputError !== '') || (passwordInput === '' || emailInput === '' || nameInput === ''));
+    }
+
+    if (isSingUpPopup) {
+      if (validateSignUpForm()) {
+        setSubmitBtnState(false);
+      } else
+      {
+        setSubmitBtnState(true);
+      }
+    }
+
+    if (isSingInPopup) {
+      if (validateSignInForm()) {
+        setSubmitBtnState(false);
+      } else
+      {
+        setSubmitBtnState(true);
+      }
+    }
+}, [isSingInPopup, isSingUpPopup, emailInputError, passwordInputError, nameInputError, emailInput, passwordInput, nameInput]);
+
+
   return (
   <BrowserRouter>
   <CurrentUserContext.Provider value={currentUser} >
   <Switch>
-  <Route exact path="/">
+  <Route exact path='/'>
     <MainPage
     loggedIn={loggedIn}
     onLoginBtn={handleLoginBtn}
     onLogoutBtn={handleLogoutBtn}
     onLogin={handleLogin}
-    onLogout={handleLogout}
     newsCards={News}
     isMainPage={isMainPage}
     isSingInPopup={isSingInPopup}
@@ -180,14 +296,31 @@ function App() {
     setMobileMenuIcon={setMobileMenuIcon}
     isRegistrationSuccess={isRegistrationSuccess}
     isRegistrationPopup={isRegistrationPopup}
-    isPopup={isPopup}
     handleRegistration={handleRegistration}
+
+    handleChangeEmail={handleChangeEmail}
+    handleChangePassword={handleChangePassword}
+    handleChangeUsername={handleChangeUsername}
+
+
+    formError={formError}
+    nameInputError={nameInputError}
+    passwordInputError={passwordInputError}
+    emailInputError={emailInputError}
+
+    nameInput={nameInput}
+    passwordInput={passwordInput}
+    emailInput={emailInput}
+
+    submitBtnState={submitBtnState}
     />
     </Route>
 
     <Route exact path='/saved-news'>
+      { !loggedIn && <Redirect to='/' /> }
       <ArticlePage
       loggedIn={loggedIn}
+      onLogoutBtn={handleLogoutBtn}
       isMainPage={!isMainPage}
       isMobileMenuActive={isMobileMenuActive}
       setMobileMenuActive={setMobileMenuActive}

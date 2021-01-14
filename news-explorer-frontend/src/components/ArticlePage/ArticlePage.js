@@ -9,12 +9,13 @@ function ArticlePage(props) {
     <div className="page__top articles-page__top">
       <Header
       loggedIn={props.loggedIn}
+      onLogoutBtn={props.onLogoutBtn}
+      onLogout={props.onLogout}
       isMainPage={props.isMainPage}
       isMobileMenuActive={props.isMobileMenuActive}
       setMobileMenuActive={props.setMobileMenuActive}
       isMobileMenuIcon={props.isMobileMenuIcon}
       setMobileMenuIcon={props.setMobileMenuIcon}
-
       />
 
       <SavedNewsHeader

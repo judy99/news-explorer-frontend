@@ -60,7 +60,7 @@ function Header (props) {
           )
         }
         </ul>
-        {props.loggedIn ? <Button btnStyle={`${btnStyleLogin} ${!props.isMainPage && btnThemeLight}` } onClick={props.onLogoutBtn}>{currentUser}</Button> :
+        {props.loggedIn ? <Button btnStyle={`${btnStyleLogin} ${!props.isMainPage && btnThemeLight}` } onClick={props.onLogoutBtn}>{currentUser.username}</Button> :
         <Button btnStyle={`${btnStyleLogout} ${!props.isMainPage && btnThemeLight}` } onClick={props.onLoginBtn}>Sign in</Button>
         }
 

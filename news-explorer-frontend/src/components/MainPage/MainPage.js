@@ -2,13 +2,12 @@ import React from 'react';
 import Header from '../Header/Header.js';
 import Search from '../Search/Search.js';
 import Main from '../Main/Main.js';
-import PopupWithForm from '../PopupWithForm/PopupWithForm.js';
+import PopupSignIn from '../PopupSignIn/PopupSignIn.js';
+import PopupSignUp from '../PopupSignUp/PopupSignUp.js';
 import PopupInfo from '../PopupInfo/PopupInfo.js';
 
 
-
 function MainPage (props) {
-
   return (
   <>
     <div className="page__top" onKeyPress={props.onKeyPress} tabIndex='0'>
@@ -21,49 +20,64 @@ function MainPage (props) {
       setMobileMenuActive={props.setMobileMenuActive}
       isMobileMenuIcon={props.isMobileMenuIcon}
       setMobileMenuIcon={props.setMobileMenuIcon}
+
       />
       <Search />
       <Main loggedIn={props.loggedIn} newsCards={props.newsCards} isMainPage={props.isMainPage}/>
     </div>
-    <PopupWithForm isSingInPopup={props.isSingInPopup} onPopupClose={props.onPopupClose} name='login' title='Sign in' linkName='Sign up' onClickLink={props.handleClickLinkSignup} onSubmit={props.handleSign} isPopup={props.isPopup}>
-      <label htmlFor="email-input" className="popup-form__label login__label">Email</label>
-      <input type='email' name='email' id='email-input' className='form__input popup-form__input login__email' placeholder='Enter email' onChange={props.handleChangeEmail} required />
-      <span id='email-input-error' className='form__input-error'></span>
 
-      <label htmlFor="password-input" className="popup-form__label login__label">Password</label>
-      <input type='password' name='password' id='password-input' className='form__input popup-form__input login__password' placeholder='Enter password' onChange={props.handleChangePassword} required />
-      <span id='password-input-error' className='form__input-error'></span>
-    </PopupWithForm>
-
-    <PopupWithForm isSingUpPopup={props.isSingUpPopup}
+    { props.isSingInPopup &&
+    <PopupSignIn
     onPopupClose={props.onPopupClose}
-    name='signup' title='Sign up'
-    linkName='Sign in'
-    onClickLink={props.handleClickLinkSignin}
+    handleClickLinkSignup={props.handleClickLinkSignup}
+    onSubmit={props.onLogin}
+    submitBtnState={props.submitBtnState}
+    setSubmitBtnState = {props.setSubmitBtnState}
+
+    emailInputError={props.emailInputError}
+    passwordInputError={props.passwordInputError}
+
+    emailInput={props.emailInput}
+    passwordInput={props.passwordInput}
+
+    handleChangeEmail={props.handleChangeEmail}
+    handleChangePassword={props.handleChangePassword}
+     >
+    </PopupSignIn>
+    }
+
+
+    { props.isSingUpPopup &&
+    <PopupSignUp
+    onPopupClose={props.onPopupClose}
+    handleClickLinkSignin={props.handleClickLinkSignin}
     onSubmit={props.handleRegistration}
-    isPopup={props.isPopup}
-    >
-      <label htmlFor="email-input" className="popup-form__label signup__label">Email</label>
-      <input type='email' name='email' id='email-input' className='form__input popup-form__input signup__email' placeholder='Enter email' onChange={props.handleChangeEmail} required />
-      <span id='email-input-error' className='form__input-error'></span>
+    submitBtnState={props.submitBtnState}
+    emailInputError={props.emailInputError}
+    passwordInputError={props.passwordInputError}
+    nameInputError={props.nameInputError}
 
-      <label htmlFor="password-input" className="popup-form__label signup__label">Password</label>
-      <input type='password' name='password' id='password-input' className='form__input popup-form__input signup__password' placeholder='Enter password' onChange={props.handleChangePassword} required />
-      <span id='password-input-error' className='form__input-error'></span>
+    emailInput={props.emailInput}
+    passwordInput={props.passwordInput}
+    nameInput={props.nameInput}
 
-      <label htmlFor="username-input" className="popup-form__label signup__label">Username</label>
-      <input type='username' name='username' id='username-input' className='form__input popup-form__input signup__username' placeholder='Enter your username' onChange={props.handleChangeUsername} required />
-      <span id='username-input-error' className='form__input-error'></span>
-    </PopupWithForm>
+    handleChangeEmail={props.handleChangeEmail}
+    handleChangePassword={props.handleChangePassword}
+    handleChangeUsername={props.handleChangeUsername}
 
+ >
+
+    </PopupSignUp>
+  }
+
+  {(props.isRegistrationSuccess && props.isRegistrationPopup) &&
     <PopupInfo
-    isRegistrationSuccess={props.isRegistrationSuccess}
-    isRegistrationPopup={props.isRegistrationPopup}
     linkName="Sign in"
     title="Registration successfully completed!"
-    onClickLink={props.onClickLink}
+    onClickLink={props.handleClickLinkSignin}
     onPopupClose={props.onPopupClose}
-    isPopup={props.isPopup} />
+    />
+  }
   </>
   );
 }

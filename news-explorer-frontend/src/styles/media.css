@@ -438,11 +438,19 @@
 
   .popup__container {
     top: 56px;
-    left: 0;
+    left:0;
     min-width: 320px;
     max-width: 100%;
     width: 100%;
     height: 100%;
+  }
+
+  .popup__container_info {
+    top:auto;
+    left:auto;
+    max-width: auto;
+    height: auto;
+    top: 20%;
   }
 
   .popup__close {

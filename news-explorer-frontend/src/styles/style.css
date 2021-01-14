@@ -739,10 +739,6 @@
   color: #2F71E5;
 }
 
-.login__label {
-  margin-bottom: 9px;
-}
-
 .popup-form {
   display: flex;
   justify-content: center;
@@ -765,10 +761,6 @@
   margin-bottom: 5px;
   border: 0;
   border-bottom: 1px solid #B6BCBF;
-}
-
-.login__password {
-  margin-bottom: 39px;
 }
 
 .popup-form__input:focus {
@@ -905,5 +897,36 @@
   font-size: 12px;
   line-height: 15px;
   color: #FF0000;
-  margin-bottom: 31px;
+  /* margin-bottom: 31px; */
+  height: 28px;
+}
+
+.popup-info__heading {
+  margin-bottom: 14px;
+}
+
+.popup-info__link {
+  font-size: 18px;
+  line-height: 22px;
+  padding: 0;
+}
+
+.popup-info__bottom {
+  align-self:flex-start;
+  margin-top: 0;
+}
+
+.popup__container_info {
+  padding: 43px 79px 51px 36px;
+}
+
+.form__submit_disabled {
+  background: #E6E8EB;
+  color: #B6BCBF;
+  box-shadow: none;
+}
+
+.form__submit_disabled:hover {
+  cursor: auto;
+  background: #E6E8EB;
 }

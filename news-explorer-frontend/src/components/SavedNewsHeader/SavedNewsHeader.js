@@ -17,7 +17,7 @@ function SavedNewsHeader (props) {
   return (
     <div className="articles-page__info">
       <p className="articles-page__saved">Saved articles</p>
-      <h2 className="heading articles-page__heading">{currentUser}, you have {props.articleNumber} saved articles</h2>
+      <h2 className="heading articles-page__heading">{currentUser ? currentUser.username : ''}, you have {props.articleNumber} saved articles</h2>
       <div className="articles-page__keyword">
         <span className="articles-page__keywords-by">By keywords:&nbsp;</span>
         <span className="articles-page__keywords">{keywordArrayToShow()}, and {otherKeywordNums} other</span>
