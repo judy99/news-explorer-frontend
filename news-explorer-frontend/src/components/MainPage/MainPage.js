@@ -25,7 +25,7 @@ function MainPage (props) {
       <Search onSubmitSearch={props.onSubmitSearch} />
       { props.isSearching && <Preloader /> }
       { props.isNotFound ? <NotFound /> :
-        <SearchResult loggedIn={props.loggedIn} newsCards={props.newsCards} isMainPage={props.isMainPage} />
+        <SearchResult loggedIn={props.loggedIn} newsCards={props.newsCards} isMainPage={props.isMainPage} onCardSave={props.onCardSave} onCardDelete={props.onCardDelete} />
       }
       <About />
     </div>

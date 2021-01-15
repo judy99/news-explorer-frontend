@@ -13,7 +13,7 @@ function SearchResult (props) {
     { props.newsCards.length > 0 &&
       <section className="search-results">
         <h2 className="heading search-results__heading">Search results</h2>
-        <NewsCardList newsCards={ props.newsCards } onCardSave={props.onCardSave} isMainPage={props.isMainPage} />
+        <NewsCardList newsCards={ props.newsCards } onCardSave={props.onCardSave} onCardDelete={props.onCardDelete} isMainPage={props.isMainPage} loggedIn={props.loggedIn}  />
         <Button btnStyle={btnStyleShow} onClick={handleShowMore}>Show more</Button>
       </section>
     }

@@ -408,6 +408,9 @@
 
 .news__icon-save {
   background-size: 14px 19px;
+}
+
+.news__icon-save_normal {
   background-image: url(../images/compressed/save-normal.png);
 }
 
@@ -441,7 +444,7 @@
   display: block;
 }
 
-.news__icon-save:hover {
+.news__icon-save_normal:hover {
   background-image: url(../images/compressed/save-hover.png);
 }
 

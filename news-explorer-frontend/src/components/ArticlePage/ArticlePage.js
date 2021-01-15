@@ -28,7 +28,9 @@ function ArticlePage(props) {
       <NewsCardList
       newsCards={props.newsCards}
       onCardDelete={props.onCardDelete}
-      isMainPage={props.isMainPage} />
+      isMainPage={props.isMainPage}
+      loggedIn={props.loggedIn}
+       />
       </div>
       </main>
 
