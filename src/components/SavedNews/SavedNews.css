@@ -21,8 +21,7 @@
   width: calc(100% - 2 * 104px);
   margin: auto;
   text-align: center;
-  padding-bottom: 80px;
-  padding-top: 80px;
+  padding: 60px 0;
 }
 
 @media screen and (max-width: 768px) {
@@ -33,14 +32,14 @@
   }
 
   .search-result__btn {
-    padding: 16px 74px;
-    margin-top: 25px;
+    padding: 15px 75px;
+    margin-top: 32px;
   }
 }
 
 @media screen and (max-width: 660px) {
   .search-result__btn {
-    margin-top: 15px;
+    margin-top: 23px;
   }
 
   .saved-results {
@@ -63,4 +62,9 @@
     width: 288px;
     min-width: 288px;
   }
+
+  .saved-results {
+    padding-top: 24px;
+  }
+
 }

@@ -31,7 +31,7 @@
   line-height: 24px;
   color: #1A1B22;
   margin: 0;
-  padding-bottom: 10px;
+  padding-bottom: 24px;
 }
 
 @media screen and (max-width: 1170px) {
@@ -53,11 +53,11 @@
   }
 
   .about__info {
-    padding: 40px 40px 0 32px;
+    padding: 42px 40px 0 32px;
   }
 
   .about__heading {
-    margin: 0 0 16px 0;
+    margin: 0 0 10px 0;
     font-size: 30px;
     line-height: 40px;
   }
@@ -78,5 +78,15 @@
 
   .about__info {
     padding: 24px 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .about__heading {
+    margin: 0 0 17px 0;
+  }
+
+  .about {
+    padding-bottom: 78px;
   }
 }

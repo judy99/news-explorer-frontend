@@ -17,18 +17,28 @@
 
 .page:before {
   content: '';
-  width: 1440px;
-  height: 100%;
+  /* width: 1440px;
+  height: 1746px; */
+  /* width: 768px;
+  height: 1472px; */
+  width: 320px;
+  height: 3040px;
   position: absolute;
   top:0;
   left: 0;
-  background-image: url('../../images/temp/Main_Results_Not_Logged_In.png');
+  /* background-image: url('../../images/temp/Main_Results_Not_Logged_In.png'); */
+  /* background-image: url('../../images/temp/Main_Results_Logged_In.png'); */
+  /* background-image: url('../../images/temp/Tablet_Main_Results_Not_Logged_In.png'); */
+  /* background-image: url('../../images/temp/Mobile_Main_Results_Not_Logged_In.png'); */
+  /* background-image: url('../../images/temp/Saved_News_Logged_In.png'); */
+  /* background-image: url('../../images/temp/Tablet_Saved_News_Logged_In.png'); */
+  background-image: url('../../images/temp/Mobile_Saved_News_Logged_In.png');
+
+
   background-repeat: no-repeat;
   background-size: contain;
   opacity: 0.5;
 }
-
-
 
 .heading {
   font-family: 'Roboto Slab', 'Arial', 'Helvetica', sans-serif;

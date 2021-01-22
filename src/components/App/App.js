@@ -106,18 +106,6 @@ function App() {
     owner: [1],
   },
 
-    {
-    _id: 6,
-    keyword: 'Birds',
-    date: 'March 18, 2020',
-    title: 'Scientists Don\'t Know Why Polaris Is So Weird ',
-    text: 'Humans have long relied on the starry sky to push into new frontiers, sail to the very edge of the world and find their way back home again. Even animals look to the stars to guide them. ',
-    source: 'treehugger',
-    link: '/static/media/image_08.f7744e35.jpg',
-    owner: [1],
-  },
-
-
   ];
 
 // logout the website

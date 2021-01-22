@@ -1,5 +1,5 @@
 .header {
-  height: 80px;
+  height: 85px;
   display: flex;
   width: calc(100% - 2 * 104px);
   margin: auto;
@@ -7,7 +7,6 @@
 .articles-page__header {
   background-color: transparent;
 }
-
 
 .header_theme_light {
   background-color: white;
@@ -80,7 +79,7 @@
 }
 
 .main-menu__item {
-  margin-right: 42px;
+  margin-right: 37px;
 }
 
 .menu__link {
@@ -91,7 +90,7 @@
   text-align: center;
   color: rgba(182, 188, 191, 1);
   padding: 0 5px;
-  padding-bottom: 26px;
+  padding-bottom: 25px;
   white-space: nowrap;
 }
 
@@ -112,7 +111,7 @@
 }
 
 .btn-header_logout {
-  padding: 12px 40px 12px 19px;
+  padding: 11px 40px 11px 19px;
   background-image: url('../../images/compressed/arrow-white.png');
   background-size: 17px 16px;
   background-position: 90% 50%;
@@ -120,8 +119,8 @@
 }
 
 .btn-header_login {
-  padding: 12px;
-  min-width: 152px;
+  padding: 11px;
+  min-width: 176px;
 }
 
 @media screen and (max-width: 768px) {
@@ -129,9 +128,16 @@
     height: 66px;
     width: calc(100% - 2 * 40px);
   }
-
   .main-menu__link {
-    padding-bottom: 23px;
+    padding-bottom: 19px;
+  }
+
+  .btn-header_login {
+    padding: 7px;
+    min-width: 153px;
+  }
+  .main-menu__item {
+    margin-right: 18px;
   }
 }
 
@@ -139,6 +145,9 @@
   .header {
     height: 56px;
     width: 100%;
+  }
+  .logo {
+    font-size: 16px;
   }
 
   .header__wrapper {
@@ -222,7 +231,8 @@
     padding: 16px;
   }
 
-  .btn-header_login, .btn-header_logout {
+  .btn-header_login,
+  .btn-header_logout {
     align-self: center;
     max-width: 288px;
     width: 100%;

@@ -10,8 +10,8 @@
 .burger-menu {
   display: block;
   position: absolute;
-  right: 16px;
-  top: 28px;
+  right: 20px;
+  top: 24px;
 }
 
 .burger-menu:before,

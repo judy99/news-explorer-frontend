@@ -59,7 +59,7 @@
 }
 
 .news__tooltip {
-  padding: 11px 20px;
+  padding: 11px 25px;
   background: #FFFFFF;
   box-shadow: 0px 10px 22px rgba(59, 74, 116, 0.1);
   border-radius: 10px;
@@ -217,6 +217,10 @@
     height: 88px;
     max-height: 88px;
     min-height: 88px;
+  }
+
+    .news__post {
+    padding: 0 16px 24px;
   }
 }
 

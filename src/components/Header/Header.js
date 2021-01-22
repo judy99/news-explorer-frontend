@@ -22,8 +22,8 @@ function Header (props) {
 
   return (
   <header className={`header
-    ${!props.isMainPage && 'articles-page__header'}
-    ${(!props.isMainPage && props.isMobileMenuActive) && 'articles-page__header_active'}`}
+    ${!props.isMainPage && ' articles-page__header'}
+    ${(!props.isMainPage && props.isMobileMenuActive) && ' articles-page__header_active'}`}
     style={ (props.isMobileMenuActive && !props.isSingInPopup) ? {backgroundColor:'#000'} : {backgroundColor:'transparent'}} >
 
     <div className='header__wrapper'>
