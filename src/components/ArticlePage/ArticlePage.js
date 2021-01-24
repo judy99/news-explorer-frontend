@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from '../Header/Header.js';
 import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader.js';
-import NewsCardList from '../NewsCardList/NewsCardList.js';
-
+import SavedNews from '../SavedNews/SavedNews.js';
+import './ArticlePage.css';
 
 function ArticlePage(props) {
   return (
-    <div className="page__top articles-page__top">
+    <div className='page__top articles-page__top'>
       <Header
       loggedIn={props.loggedIn}
       onLogoutBtn={props.onLogoutBtn}
@@ -15,27 +15,21 @@ function ArticlePage(props) {
       isMobileMenuActive={props.isMobileMenuActive}
       setMobileMenuActive={props.setMobileMenuActive}
       isMobileMenuIcon={props.isMobileMenuIcon}
-      setMobileMenuIcon={props.setMobileMenuIcon}
-      />
+      setMobileMenuIcon={props.setMobileMenuIcon} />
 
       <SavedNewsHeader
       articleNumber={props.articleNumber}
       keywordArray={props.keywordArray}
-      keywordArrayNumber={props.keywordArrayNumber}  />
+      keywordArrayNumber={props.keywordArrayNumber} />
 
-      <main className="main">
-      <div className="search-results">
-      <NewsCardList
-      newsCards={props.newsCards}
-      onCardDelete={props.onCardDelete}
-      isMainPage={props.isMainPage}
-      loggedIn={props.loggedIn}
-       />
-      </div>
+      <main className='main'>
+        <SavedNews
+        newsCards={props.newsCards}
+        onCardDelete={props.onCardDelete}
+        isMainPage={props.isMainPage}
+        loggedIn={props.loggedIn} />
       </main>
-
     </div>
-
   );
 }
 

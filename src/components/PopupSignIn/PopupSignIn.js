@@ -1,11 +1,11 @@
 import React from 'react';
 import PopupWithForm from '../PopupWithForm/PopupWithForm.js';
+import FormField from '../FormField/FormField.js';
 
 function PopupSignIn(props) {
   const popupName = 'login';
   const popupTitle = 'Sign in';
   const popupBottomLink = 'Sign up';
-
 
   return (
     <>
@@ -22,14 +22,9 @@ function PopupSignIn(props) {
       emailInputError = {props.emailInputError}
       passwordInputError = {props.passwordInputError} >
 
-      <label htmlFor = "email-input" className = "popup-form__label login__label" > Email < /label>
-      <input type = 'email' name = 'email' id = 'email-input' className = 'form__input popup-form__input login__email'
-        placeholder = 'Enter email' onChange = {props.handleChangeEmail} noValidate / >
-      <span id = 'email-input-error' className = 'form__input-error' > {props.emailInputError && props.emailInputError} < /span>
-      <label htmlFor = "password-input" className = "popup-form__label login__label" > Password < /label>
-      <input type = 'password' name = 'password' id = 'password-input' className = 'form__input popup-form__input login__password'
-          placeholder = 'Enter password' onChange = {props.handleChangePassword} noValidate / >
-      <span id = 'password-input-error' className = 'form__input-error' > {props.passwordInputError && props.passwordInputError} < /span>
+      <FormField nameField='email' typeField='login' handleChange={props.handleChangeEmail} inputError={props.emailInputError} />
+      <FormField nameField='password' typeField='login' handleChange={props.handleChangePassword} inputError={props.passwordInputError} />
+
     </PopupWithForm>
     </>
   );

@@ -2,11 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 # Yandex Practicum
 # Final Project: Stage 2, Markup and JSX
 
-### Overview
-* Intro
-* Figma
-* Images
-* [Link to the page](https://github.com/judy99/news-explorer-frontend/tree/stage-2)
+## Overview
 
 **Intro**
 

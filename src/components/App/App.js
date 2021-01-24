@@ -1,10 +1,9 @@
 import React, {useRef} from 'react';
 import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom';
+import './App.css';
 import MainPage from '../MainPage/MainPage.js';
 import ArticlePage from '../ArticlePage/ArticlePage.js';
-// import ProtectedRoute from '../ProtectedRoute';
 import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
-// import Header from '../Header/Header.js';
 import Footer from '../Footer/Footer.js';
 import { MIN_LENGTH_NAME, MIN_LENGTH_PASSWORD } from '../../utils/consts.js';
 
@@ -49,6 +48,8 @@ function App() {
   // link — a link to the article (string, required, must be a URL address).
   // image — a link to the image for the article (string, required, must be a URL address).
   // owner — the _id of the user who saved the article. You need to set the default behavior so that the database doesn't return this field.
+
+  // const NewsEmpty = [];
 
   const News = [
     {
@@ -105,18 +106,6 @@ function App() {
     owner: [1],
   },
 
-    {
-    _id: 6,
-    keyword: 'Birds',
-    date: 'March 18, 2020',
-    title: 'Scientists Don\'t Know Why Polaris Is So Weird ',
-    text: 'Humans have long relied on the starry sky to push into new frontiers, sail to the very edge of the world and find their way back home again. Even animals look to the stars to guide them. ',
-    source: 'treehugger',
-    link: '/static/media/image_08.f7744e35.jpg',
-    owner: [1],
-  },
-
-
   ];
 
 // logout the website
@@ -157,17 +146,16 @@ function App() {
     setNameInput('');
     setNameInputError('');
     setSubmitBtnState(false);
-    // resetForm();
   }
 
   const validateName = (input) => {
     return (input.length < MIN_LENGTH_NAME) ? false : true;
   }
-  //
+
   const validateEmail = (input) => {
     return (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(input.trim())) ? false : true;
   }
-  //
+
   const validatePassword = (input) => {
     return (input.length < MIN_LENGTH_PASSWORD) ? false : true;
   }
@@ -220,7 +208,6 @@ function App() {
     return () => window.removeEventListener('keydown', handleEscPressed);
   }, [isPopup]);
 
-// ???
   React.useEffect( () => setPopup(isSingInPopup || isSingUpPopup || isRegistrationPopup)
 , [isSingInPopup, isSingUpPopup, isRegistrationPopup]);
 
@@ -228,11 +215,8 @@ function App() {
   function handleClickLinkSignup () {
     handlePopupClose();
     setSignUpPopup(true);
-    // setSignInPopup(false);
     setMobileMenuIcon(false);
     setSubmitBtnState(false);
-    // fetch
-    // setRegistrationSuccess(true);
   }
 
 // click link on popup
@@ -245,27 +229,24 @@ function App() {
 
 // click on Sign Up button on Sign Up popup
   function handleRegistration () {
-    // get info from server successfully (user info)
-      // e.preventDefault();
-      setSignUpPopup(false);
-      setRegistrationPopup(true);
-      setRegistrationSuccess(true);
+    // api
+    setSignUpPopup(false);
+    setRegistrationPopup(true);
+    setRegistrationSuccess(true);
   }
 
 // click to search by keyword
   function handleSubmitSearch (e) {
     e.preventDefault();
-    // setSearching(true);
-    // setTimeout(function() {
-    // setSearching(false);
-    // setNewsCards(News);
-    // // setNotFound(true);
-    // }
-    // , 3000);
-
-    // call api
+    setSearching(true);
+    setTimeout(function() {
+    setSearching(false);
+    setNewsCards(News);
+    // setNotFound(true);
+    }
+    , 3000);
+    // api
     // GET /articles
-
   }
 
   React.useEffect(() => {
@@ -305,17 +286,17 @@ function App() {
 
 // card
 function onCardSave () {
-  // call api
+  // api
   // POST /articles
 }
 
 function onCardDelete (card) {
-  // call api(card)
+  // api
   // DELETE /articles/articleId
 }
 
-
   return (
+  <div className='page'>
   <BrowserRouter>
   <CurrentUserContext.Provider value={currentUser} >
   <Switch>
@@ -325,7 +306,7 @@ function onCardDelete (card) {
     onLoginBtn={handleLoginBtn}
     onLogoutBtn={handleLogoutBtn}
     onLogin={handleLogin}
-    // newsCards={newsCards}
+    // newsCards={NewsEmpty}
     newsCards={News}
     isMainPage={isMainPage}
     isSingInPopup={isSingInPopup}
@@ -344,7 +325,6 @@ function onCardDelete (card) {
     handleChangeEmail={handleChangeEmail}
     handleChangePassword={handleChangePassword}
     handleChangeUsername={handleChangeUsername}
-
 
     formError={formError}
     nameInputError={nameInputError}
@@ -385,6 +365,7 @@ function onCardDelete (card) {
   < /CurrentUserContext.Provider>
   <Footer />
   </BrowserRouter>
+  </div>
   );
 }
 

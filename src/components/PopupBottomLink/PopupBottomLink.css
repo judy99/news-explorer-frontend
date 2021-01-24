@@ -1,0 +1,17 @@
+.popup-form__link:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.popup-form__link {
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  align-self: center;
+  color: #2F71E5;
+  text-decoration: none;
+  border: none;
+  background: none;
+}
