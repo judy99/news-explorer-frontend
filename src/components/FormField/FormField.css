@@ -65,9 +65,3 @@
   color: #FF0000;
   height: 28px;
 }
-
-@media screen and (max-width: 768px) {
-  .form__input::-moz-placeholder {
-     line-height: 49px;
-  }
-}

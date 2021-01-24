@@ -43,12 +43,12 @@
   font-weight: normal;
   font-size: 18px;
   line-height: 24px;
-  /* identical to box height, or 133% */
   color: #1A1B22;
   font-weight: 700;
 }
 
 .articles-page__keywords-by {
+  font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;
   font-size: 18px;
   line-height: 24px;
 }
