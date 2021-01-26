@@ -1,0 +1,13 @@
+{
+  "short_name": "NewsExp",
+  "name": "News Explorer",
+  "icons": [{
+    "src": "favicon.png",
+    "sizes": "44x44",
+    "type": "image/x-icon"
+  }],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

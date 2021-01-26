@@ -1,0 +1,30 @@
+.form {
+  display: flex;
+  width: 100%;
+}
+
+.popup-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.form__input-error {
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+  color: #FF0000;
+  height: 28px;
+}
+
+.popup-form__bottom {
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  margin-top: 16px;
+  align-self: center;
+}

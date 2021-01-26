@@ -1,0 +1,15 @@
+.popup-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.popup-form__heading {
+  font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 28px;
+  margin: 0;
+  margin-bottom: 22px;
+}
