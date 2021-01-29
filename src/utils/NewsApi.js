@@ -22,7 +22,7 @@ export class NewsApi {
         if (res.ok) {
           return res.json();
         } else {
-          return Promise.reject(`Error: ${res.status}`);
+          return Promise.reject(`Error: ${res.status}.`);
         }
       });
   }

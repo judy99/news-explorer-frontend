@@ -39,6 +39,7 @@ function App() {
   const [submitBtnState, setSubmitBtnState] = React.useState(false);
 
   const firstRender = useRef(true);
+  const [isErrorMessage, setErrorMessage] = React.useState('');
 
   // const [deleteCard, setDeleteCard] = React.useState(null);
 
@@ -268,9 +269,16 @@ function App() {
           setSearching(false);
           setNotFound(true);
         }
+        setErrorMessage('');
       })
-        .catch((err) => console.log(err))
-        .finally(() => setSearching(false));
+        .catch((err) => {
+          console.log(err);
+          setErrorMessage('Sorry, something went wrong during the request. There may be a connection issue or the server may be down. Please try again later.');
+          setNotFound(false);
+        })
+        .finally(() => {
+          setSearching(false);
+      });
     } else {
       setSearchInputError('Please enter a keyword');
       setSearching(false);
@@ -382,6 +390,7 @@ function onCardDelete (card) {
     isSearching={isSearching}
     onSubmitSearch={handleSubmitSearch}
     isNotFound={isNotFound}
+    isErrorMessage={isErrorMessage}
     searchInput={searchInput}
     searchInputError={searchInputError}
     handleChangeSearch={handleChangeSearch}

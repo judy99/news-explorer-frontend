@@ -7,7 +7,7 @@ import PopupSignUp from '../PopupSignUp/PopupSignUp.js';
 import PopupInfo from '../PopupInfo/PopupInfo.js';
 import Preloader from '../Preloader/Preloader.js';
 import NotFound from '../NotFound/NotFound.js';
-
+import ErrorMessage from '../ErrorMessage/ErrorMessage.js';
 import './MainPage.css';
 
 function MainPage (props) {
@@ -32,7 +32,9 @@ function MainPage (props) {
       <main className='main'>
         { props.isSearching && <Preloader /> }
         { props.isNotFound && <NotFound />}
-        { (!props.isNotFound && props.newsCards.length) ?
+        { props.isErrorMessage && <ErrorMessage isErrorMessage={props.isErrorMessage}/>}
+
+        { (!props.isNotFound && !props.isErrorMessage && props.newsCards.length ) ?
           <SearchResult loggedIn={props.loggedIn} newsCards={props.newsCards} isMainPage={props.isMainPage} onCardSave={props.onCardSave} onCardDelete={props.onCardDelete} />
          : null
         }
