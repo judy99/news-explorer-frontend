@@ -6,9 +6,12 @@ import PopupSignIn from '../PopupSignIn/PopupSignIn.js';
 import PopupSignUp from '../PopupSignUp/PopupSignUp.js';
 import PopupInfo from '../PopupInfo/PopupInfo.js';
 import Preloader from '../Preloader/Preloader.js';
+import NotFound from '../NotFound/NotFound.js';
+
 import './MainPage.css';
 
 function MainPage (props) {
+
   return (
     <>
       <MainPageTop
@@ -20,11 +23,18 @@ function MainPage (props) {
       setMobileMenuActive={props.setMobileMenuActive}
       isMobileMenuIcon={props.isMobileMenuIcon}
       setMobileMenuIcon={props.setMobileMenuIcon}
-      onSubmitSearch={props.onSubmitSearch} />
+      onSubmitSearch={props.onSubmitSearch}
+      searchInputError={props.searchInputError}
+      handleChangeSearch={props.handleChangeSearch}
+      searchInput={props.searchInput}
+      setSearchInputError={props.setSearchInputError} />
 
       <main className='main'>
-        { props.isSearching ? <Preloader /> :
+        { props.isSearching && <Preloader /> }
+        { props.isNotFound && <NotFound />}
+        { (!props.isNotFound && props.newsCards.length) ?
           <SearchResult loggedIn={props.loggedIn} newsCards={props.newsCards} isMainPage={props.isMainPage} onCardSave={props.onCardSave} onCardDelete={props.onCardDelete} />
+         : null
         }
       </main>
       <About />

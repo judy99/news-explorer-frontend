@@ -2,6 +2,7 @@ import React, {useRef} from 'react';
 import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom';
 import './App.css';
 import MainPage from '../MainPage/MainPage.js';
+import {newsApi} from '../../utils/NewsApi.js';
 import ArticlePage from '../ArticlePage/ArticlePage.js';
 import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 import Footer from '../Footer/Footer.js';
@@ -9,7 +10,7 @@ import { MIN_LENGTH_NAME, MIN_LENGTH_PASSWORD } from '../../utils/consts.js';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [newsCards, setNewsCards] = React.useState([]);
+  const [newsCards, setNewsCards] = React.useState(new Array(0));
   const [currentUser, setCurrentUser] = React.useState({});
   const [isMainPage, setMainPage] = React.useState(true);
   const [isSingInPopup, setSignInPopup] = React.useState(false);
@@ -32,6 +33,9 @@ function App() {
   const [passwordInput, setPasswordInput] = React.useState('');
   const [emailInput, setEmailInput] = React.useState('');
 
+  const [searchInput, setSearchInput] = React.useState('');
+  const [searchInputError, setSearchInputError] = React.useState('');
+
   const [submitBtnState, setSubmitBtnState] = React.useState(false);
 
   const firstRender = useRef(true);
@@ -51,62 +55,65 @@ function App() {
 
   // const NewsEmpty = [];
 
-  const News = [
-    {
-      _id: 1,
-      keyword: 'Nature',
-      date: 'November 4, 2020',
-      title: 'Everyone Needs a Special "Sit Spot" in Nature',
-      text: 'Ever since I read Richard Louv\'s influential book, "Last Child in the Woods," the idea of having a special "sit spot" has stuck with me. This advice, which Louv attributes to nature educator Jon Young, is for both adults and children to find',
-      source: 'treehugger',
-      link: 'https://images.unsplash.com/photo-1590013330451-3946e83e0392',
-      owner: [1,2,3],
-    },
-    {
-      _id: 2,
-      keyword: 'Nature',
-      date: 'November 5, 2020',
-      title: 'Nature makes you better',
-      text: 'We all know how good nature can make us feel. We have known it for millennia: the sound of the ocean, the scents of a forest, the way dappled sunlight dances through leaves.',
-      source: 'national geographic',
-      link: '/static/media/image_08.f7744e35.jpg',
-      owner: [1,2,3],
+  const MAX_ARTICLES_TO_SHOW = 20;
+  const SEARCH_RANGE_IN_DAYS = 7;
 
-    },
-    {
-      _id: 3,
-      keyword: 'Park',
-      date: 'November 6, 2020',
-      title: 'Nostalgic Photos of Tourists in U.S. National Parks',
-      text: 'Uri Løvevild Golman and Helle Løvevild Golman are National Geographic Explorers and conservation photographers who just completed a project and book they call their love letter to...',
-      source: 'national geographic',
-      link: 'https://images.unsplash.com/photo-1519331379826-f10be5486c6f',
-      owner: [1],
-
-    },
-    {
-      _id: 4,
-      keyword: 'Nature',
-      date: 'November 7, 2020',
-      title: 'Grand Teton Renews Historic Crest Trail',
-      text: '“The linking together of the Cascade and Death Canyon trails, at their heads, took place on October 1, 1933, and marked the first step in the realization of a plan whereby the hiker will be...',
-      source: 'National parks traveler',
-      link: 'https://images.unsplash.com/photo-1508007226633-b7de6a10cb16',
-      owner: [2],
-
-    },
-    {
-    _id: 5,
-    keyword: 'Birds',
-    date: 'March 16, 2020',
-    title: 'Scientists Don\'t Know Why Polaris Is So Weird ',
-    text: 'Humans have long relied on the starry sky to push into new frontiers, sail to the very edge of the world and find their way back home again. Even animals look to the stars to guide them. ',
-    source: 'treehugger',
-    link: '/static/media/image_08.f7744e35.jpg',
-    owner: [1],
-  },
-
-  ];
+  // const News = [
+  //   {
+  //     _id: 1,
+  //     keyword: 'Nature',
+  //     date: 'November 4, 2020',
+  //     title: 'Everyone Needs a Special "Sit Spot" in Nature',
+  //     text: 'Ever since I read Richard Louv\'s influential book, "Last Child in the Woods," the idea of having a special "sit spot" has stuck with me. This advice, which Louv attributes to nature educator Jon Young, is for both adults and children to find',
+  //     source: 'treehugger',
+  //     link: 'https://images.unsplash.com/photo-1590013330451-3946e83e0392',
+  //     owner: [1,2,3],
+  //   },
+  //   {
+  //     _id: 2,
+  //     keyword: 'Nature',
+  //     date: 'November 5, 2020',
+  //     title: 'Nature makes you better',
+  //     text: 'We all know how good nature can make us feel. We have known it for millennia: the sound of the ocean, the scents of a forest, the way dappled sunlight dances through leaves.',
+  //     source: 'national geographic',
+  //     link: '/static/media/image_08.f7744e35.jpg',
+  //     owner: [1,2,3],
+  //
+  //   },
+  //   {
+  //     _id: 3,
+  //     keyword: 'Park',
+  //     date: 'November 6, 2020',
+  //     title: 'Nostalgic Photos of Tourists in U.S. National Parks',
+  //     text: 'Uri Løvevild Golman and Helle Løvevild Golman are National Geographic Explorers and conservation photographers who just completed a project and book they call their love letter to...',
+  //     source: 'national geographic',
+  //     link: 'https://images.unsplash.com/photo-1519331379826-f10be5486c6f',
+  //     owner: [1],
+  //
+  //   },
+  //   {
+  //     _id: 4,
+  //     keyword: 'Nature',
+  //     date: 'November 7, 2020',
+  //     title: 'Grand Teton Renews Historic Crest Trail',
+  //     text: '“The linking together of the Cascade and Death Canyon trails, at their heads, took place on October 1, 1933, and marked the first step in the realization of a plan whereby the hiker will be...',
+  //     source: 'National parks traveler',
+  //     link: 'https://images.unsplash.com/photo-1508007226633-b7de6a10cb16',
+  //     owner: [2],
+  //
+  //   },
+  //   {
+  //   _id: 5,
+  //   keyword: 'Birds',
+  //   date: 'March 16, 2020',
+  //   title: 'Scientists Don\'t Know Why Polaris Is So Weird ',
+  //   text: 'Humans have long relied on the starry sky to push into new frontiers, sail to the very edge of the world and find their way back home again. Even animals look to the stars to guide them. ',
+  //   source: 'treehugger',
+  //   link: '/static/media/image_08.f7744e35.jpg',
+  //   owner: [1],
+  // },
+  //
+  // ];
 
 // logout the website
   function handleLogoutBtn () {
@@ -238,15 +245,48 @@ function App() {
 // click to search by keyword
   function handleSubmitSearch (e) {
     e.preventDefault();
-    setSearching(true);
-    setTimeout(function() {
-    setSearching(false);
-    setNewsCards(News);
-    // setNotFound(true);
+
+    if (searchInput !== '') {
+      setSearching(true);
+      setSearchInputError('');
+
+      let currentDate = new Date();
+
+      newsApi.getCardsByKeyword({
+        q: searchInput,
+        apiKey: 'c61a554213c94eaf86690e2d6782eeb1',
+        from: encodeURIComponent(new Date(currentDate.setDate(currentDate.getDate() - SEARCH_RANGE_IN_DAYS)).toISOString()),
+        to: encodeURIComponent(new Date().toISOString()),
+        pageSize: MAX_ARTICLES_TO_SHOW,
+      })
+      .then(res => {
+        if (res.articles.length !== 0) {
+          setNewsCards(res.articles);
+          setNotFound(false);
+
+        } else {
+          setSearching(false);
+          setNotFound(true);
+        }
+      })
+        .catch((err) => console.log(err))
+        .finally(() => setSearching(false));
+    } else {
+      setSearchInputError('Please enter a keyword');
+      setSearching(false);
     }
-    , 3000);
-    // api
-    // GET /articles
+  }
+
+  function handleChangeSearch (e) {
+    console.log(e.target.value);
+    if (e.target.value.trim() !== '') {
+      setSearchInput(e.target.value);
+      setSearchInputError('');
+    } else {
+      setSearchInput('');
+      setSearchInputError('Please enter a keyword');
+    }
+
   }
 
   React.useEffect(() => {
@@ -263,6 +303,8 @@ function App() {
     const validateSignUpForm = () => {
       return ((passwordInputError !== '' || emailInputError !== '' || nameInputError !== '') || (passwordInput === '' || emailInput === '' || nameInput === ''));
     }
+
+
 
     if (isSingUpPopup) {
       if (validateSignUpForm()) {
@@ -306,8 +348,8 @@ function onCardDelete (card) {
     onLoginBtn={handleLoginBtn}
     onLogoutBtn={handleLogoutBtn}
     onLogin={handleLogin}
-    // newsCards={NewsEmpty}
-    newsCards={News}
+    newsCards={newsCards}
+    // newsCards={News}
     isMainPage={isMainPage}
     isSingInPopup={isSingInPopup}
     isSingUpPopup={isSingUpPopup}
@@ -340,6 +382,10 @@ function onCardDelete (card) {
     isSearching={isSearching}
     onSubmitSearch={handleSubmitSearch}
     isNotFound={isNotFound}
+    searchInput={searchInput}
+    searchInputError={searchInputError}
+    handleChangeSearch={handleChangeSearch}
+    setSearchInputError={setSearchInputError}
 
     onCardSave={onCardSave}
     onCardDelete={onCardDelete}
@@ -358,7 +404,7 @@ function onCardDelete (card) {
       setMobileMenuIcon={setMobileMenuIcon}
       articleNumber={articleNumber}
       keywordArray={keywordArray}
-      newsCards={News}
+      newsCards={newsCards}
       />
     </Route>
   </Switch>

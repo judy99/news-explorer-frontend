@@ -16,7 +16,7 @@ function MainPageTop (props) {
         setMobileMenuActive={props.setMobileMenuActive}
         isMobileMenuIcon={props.isMobileMenuIcon}
         setMobileMenuIcon={props.setMobileMenuIcon} />
-        <Search onSubmitSearch={props.onSubmitSearch} />
+        <Search onSubmitSearch={props.onSubmitSearch} searchInputError={props.searchInputError} handleChangeSearch={props.handleChangeSearch} searchInput={props.searchInput} setSearchInputError={props.setSearchInputError} />
       </div>
     </>
   );
