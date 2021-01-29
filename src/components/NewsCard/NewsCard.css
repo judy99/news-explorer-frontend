@@ -14,6 +14,21 @@
   cursor: pointer;
 }
 
+.news__link {
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: left;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-origin: border-box;
+  max-height: 576px;
+  height: 576px;
+}
+
 /* show just 6 first items */
 .news__item:nth-child(n + 7) {
   display: none;
@@ -59,6 +74,7 @@
 }
 
 .news__tooltip {
+  color: #000;
   padding: 11px 25px;
   background: #FFFFFF;
   box-shadow: 0px 10px 22px rgba(59, 74, 116, 0.1);

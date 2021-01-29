@@ -9,8 +9,13 @@ import Footer from '../Footer/Footer.js';
 import { MIN_LENGTH_NAME, MIN_LENGTH_PASSWORD } from '../../utils/consts.js';
 
 function App() {
+  const ARTICLES_TO_SHOW = 3;
+  const MAX_ARTICLES_TO_GET = 20;
+  const SEARCH_RANGE_IN_DAYS = 7;
+
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [newsCards, setNewsCards] = React.useState(new Array(0));
+  const [cardsToShow, setCardsToShow] = React.useState(ARTICLES_TO_SHOW);
   const [currentUser, setCurrentUser] = React.useState({});
   const [isMainPage, setMainPage] = React.useState(true);
   const [isSingInPopup, setSignInPopup] = React.useState(false);
@@ -55,9 +60,6 @@ function App() {
   // owner — the _id of the user who saved the article. You need to set the default behavior so that the database doesn't return this field.
 
   // const NewsEmpty = [];
-
-  const MAX_ARTICLES_TO_SHOW = 20;
-  const SEARCH_RANGE_IN_DAYS = 7;
 
   // const News = [
   //   {
@@ -258,7 +260,7 @@ function App() {
         apiKey: 'c61a554213c94eaf86690e2d6782eeb1',
         from: encodeURIComponent(new Date(currentDate.setDate(currentDate.getDate() - SEARCH_RANGE_IN_DAYS)).toISOString()),
         to: encodeURIComponent(new Date().toISOString()),
-        pageSize: MAX_ARTICLES_TO_SHOW,
+        pageSize: MAX_ARTICLES_TO_GET,
       })
       .then(res => {
         if (res.articles.length !== 0) {

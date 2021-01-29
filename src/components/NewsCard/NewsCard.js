@@ -4,7 +4,11 @@ import './NewsCard.css';
 function NewsCard (props) {
   const [saved, setSaved]= React.useState(false);
   const [deleted, setDeleted]= React.useState(false);
-  const onSave = () => {
+
+  const onSave = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
     if (props.loggedIn) {
       setSaved(!saved);
       props.onCardSave(props.card);
@@ -13,13 +17,20 @@ function NewsCard (props) {
 
   const onDelete = (e) => {
     e.stopPropagation();
+    e.preventDefault();
     if (props.loggedIn) {
       setDeleted(true);
+      // props.onCardDelete(props.card);
     }
   }
 
+  const onCardClick = (e) => {
+    e.preventDefault();
+    window.open(props.card.url);
+  }
+
   return (
-  <li className='news__item'>
+  <li className='news__item' onClick={onCardClick}>
     <div className='news__tools' style={{backgroundImage:`url(${props.card.urlToImage})`}}>
         <div className={`news__tooltip ${props.isMainPage && 'news__tooltip_hidden'} news__tooltip-keyword` } >{props.keyword}</div>
         <div className='news__tools-action'>
