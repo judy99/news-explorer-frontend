@@ -5,14 +5,14 @@ import {Button} from '../Button/Button.js';
 import './SearchResult.css';
 
 function SearchResult (props) {
-
   const btnStyleShow = 'search-result__btn';
-  function handleShowMore () {}
   return (
       <section className='search-results'>
         {props.isMainPage ? <h2 className='heading search-results__heading'>Search results</h2> : null}
-        <NewsCardList newsCards={ props.newsCards } onCardSave={props.onCardSave} onCardDelete={props.onCardDelete} isMainPage={props.isMainPage} loggedIn={props.loggedIn}  />
-        <Button btnStyle={btnStyleShow} onClick={handleShowMore}>Show more</Button>
+        <NewsCardList newsCards={ props.newsCards } cardsToShow={props.cardsToShow} onCardSave={props.onCardSave} onCardDelete={props.onCardDelete} isMainPage={props.isMainPage} loggedIn={props.loggedIn}  />
+        { props.newsCards.length >  props.cardsToShow ?
+          <Button btnStyle={btnStyleShow} onClick={props.onShowMore}>Show more</Button>
+        : null }
       </section>
   );
 }

@@ -30,9 +30,9 @@
 }
 
 /* show just 6 first items */
-.news__item:nth-child(n + 7) {
+/* .news__item:nth-child(n + 7) {
   display: none;
-}
+} */
 
 .news__tools {
   display: flex;

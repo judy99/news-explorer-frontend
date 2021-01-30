@@ -296,8 +296,18 @@ function App() {
       setSearchInput('');
       setSearchInputError('Please enter a keyword');
     }
+  }
+
+  function handleShowMore () {
+    setCardsToShow((numArticles) => {
+      return numArticles += ARTICLES_TO_SHOW;
+    });
+  }
+
+  React.useEffect( () => {
 
   }
+  );
 
   React.useEffect(() => {
     // skip validation on first render
@@ -373,6 +383,7 @@ function onCardDelete (card) {
     isRegistrationSuccess={isRegistrationSuccess}
     isRegistrationPopup={isRegistrationPopup}
     handleRegistration={handleRegistration}
+    onShowMore={handleShowMore}
 
     handleChangeEmail={handleChangeEmail}
     handleChangePassword={handleChangePassword}
@@ -400,6 +411,7 @@ function onCardDelete (card) {
 
     onCardSave={onCardSave}
     onCardDelete={onCardDelete}
+    cardsToShow={cardsToShow}
     />
     </Route>
 

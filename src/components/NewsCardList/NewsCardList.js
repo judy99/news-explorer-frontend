@@ -8,8 +8,7 @@ function NewsCardList (props) {
   return (
     <ul className='news'>
     {
-      // props.newsCards.slice(0, arrLength).map( (item, index) => {
-      props.newsCards.map( (item, index) => {
+      props.newsCards.slice(0, props.cardsToShow).map( (item, index) => {
         return <NewsCard card={item} key={index} onCardSave={props.onCardSave} onCardDelete={props.onCardDelete} isMainPage={props.isMainPage} loggedIn={props.loggedIn} />})
     }
     </ul>
