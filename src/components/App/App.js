@@ -3,6 +3,8 @@ import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom';
 import './App.css';
 import MainPage from '../MainPage/MainPage.js';
 import {newsApi} from '../../utils/NewsApi.js';
+import {mainApi} from '../../utils/MainApi.js';
+
 import ArticlePage from '../ArticlePage/ArticlePage.js';
 import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 import Footer from '../Footer/Footer.js';
@@ -13,17 +15,26 @@ function App() {
   const MAX_ARTICLES_TO_GET = 20;
   const SEARCH_RANGE_IN_DAYS = 7;
 
+  const testUser = {
+  _id:"5fc56a42f9eb4b959febf0dd",
+  name:"test1",
+  email:"test1@mail.com",
+}
+
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [newsCards, setNewsCards] = React.useState(new Array(0));
+  const [savedArticles, setSavedArticles] = React.useState([]);
+
   const [cardsToShow, setCardsToShow] = React.useState(ARTICLES_TO_SHOW);
+
   const [currentUser, setCurrentUser] = React.useState({});
   const [isMainPage, setMainPage] = React.useState(true);
   const [isSingInPopup, setSignInPopup] = React.useState(false);
   const [isSingUpPopup, setSignUpPopup] = React.useState(false);
   const [isMobileMenuActive, setMobileMenuActive] = React.useState(false);
   const [isMobileMenuIcon, setMobileMenuIcon] = React.useState(true);
-  const [keywordArray, setKeywordArray] = React.useState(['Nature', 'Yellowstone', 'Photographer', 'Animals', 'Birds']);
-  const [articleNumber, setArticleNumber] = React.useState(keywordArray.length);
+  const [keyword, setKeyword] = React.useState('');
+  const [keywordArray, setKeywordArray] = React.useState([]);
   const [isRegistrationSuccess, setRegistrationSuccess] = React.useState(false);
   const [isRegistrationPopup, setRegistrationPopup] = React.useState(false);
   const [isPopup, setPopup] = React.useState(isSingInPopup || isSingUpPopup || isRegistrationPopup);
@@ -48,7 +59,7 @@ function App() {
 
   // const [deleteCard, setDeleteCard] = React.useState(null);
 
-  const testUser1 = {id: 1, username: 'EliseTest1', login: 'elisetest1@test.com'};
+  // const testUser1 = {id: 1, username: 'EliseTest1', login: 'elisetest1@test.com'};
 
   // keyword — the word by which the articles are searched. A string, required field.
   // title — an article title (string, required).
@@ -118,6 +129,28 @@ function App() {
   //
   // ];
 
+  // mainApi.getSavedArticles(testUser._id).then((res) => {
+  //       console.log('res saved articles: ', typeof res);
+  //       console.log('res saved articles: ', res);
+  //       setSavedArticles(res);
+  //     })
+  //     .catch((err) => console.log(err));
+  //
+  //   console.log('SavedArticles: ', savedArticles);
+
+// get all saved articles at first rendering
+  React.useEffect(() => {
+    mainApi.getSavedArticles(testUser._id).then((res) => {
+      console.log('res saved articles: ', typeof res);
+      console.log('res saved articles: ', res);
+      setSavedArticles(res);
+      console.log('SavedArticles: ', savedArticles);
+    })
+    .catch((err) => console.log(err)
+  );
+}, []);
+
+
 // logout the website
   function handleLogoutBtn () {
     setLoggedIn(false);
@@ -140,7 +173,7 @@ function App() {
     setMobileMenuActive(false);
     setMobileMenuIcon(true);
     setLoggedIn(true);
-    setCurrentUser(testUser1);
+    setCurrentUser(testUser);
   }
 
 
@@ -221,6 +254,10 @@ function App() {
   React.useEffect( () => setPopup(isSingInPopup || isSingUpPopup || isRegistrationPopup)
 , [isSingInPopup, isSingUpPopup, isRegistrationPopup]);
 
+React.useEffect(() => {
+  setKeywordArray(...keywordArray, keyword);
+}, [keyword]);
+
 // click link on popup
   function handleClickLinkSignup () {
     handlePopupClose();
@@ -252,6 +289,9 @@ function App() {
     if (searchInput !== '') {
       setSearching(true);
       setSearchInputError('');
+      // ???
+      setKeyword(searchInput);
+
 
       let currentDate = new Date();
 
@@ -264,9 +304,20 @@ function App() {
       })
       .then(res => {
         if (res.articles.length !== 0) {
-          setNewsCards(res.articles);
-          setNotFound(false);
+          const result = res.articles.map((item) => {
+            return {
+              title: item.title,
+              text: item.content,
+              date: item.publishedAt,
+              source: item.source.name,
+              link: item.url,
+              image: item.urlToImage,
+             }
+          });
 
+          // setNewsCards(res.articles);
+          setNewsCards(result);
+          setNotFound(false);
         } else {
           setSearching(false);
           setNotFound(true);
@@ -284,6 +335,7 @@ function App() {
     } else {
       setSearchInputError('Please enter a keyword');
       setSearching(false);
+      setKeyword('');
     }
   }
 
@@ -303,11 +355,6 @@ function App() {
       return numArticles += ARTICLES_TO_SHOW;
     });
   }
-
-  React.useEffect( () => {
-
-  }
-  );
 
   React.useEffect(() => {
     // skip validation on first render
@@ -346,14 +393,36 @@ function App() {
 }, [isSingInPopup, isSingUpPopup, emailInputError, passwordInputError, nameInputError, emailInput, passwordInput, nameInput]);
 
 
-// card
-function onCardSave () {
-  // api
-  // POST /articles
+// save article
+// click on flag icon
+function onCardSave (article) {
+  console.log('article', article);
+  console.log('article keyword: ', article.keyword);
+  console.log('article titile: ', article.title);
+  console.log('article owner: ', article.owner);
+  console.log('article date: ', article.date);
+
+  // console.log('article: ', typeof (article));
+  // const {keyword, title, text, date, source, link, image, owner} = article;
+  mainApi.addArticle(article).then((res) => {
+    console.log('res article: ', res);
+    setSavedArticles([...savedArticles, res]);
+  })
+    .catch((err) => {
+      console.log('article inside error: ', article);
+      console.log(err)})
+    .finally(() => {});
 }
 
-function onCardDelete (card) {
-  // api
+// click on trash can icon
+function onCardDelete (article) {
+    mainApi.removeArticle(article._id).then(() => {
+    // Create a new array based on the existing one and removing a card from it
+      const newArticles = article.filter((c) => c._id !== article._id);
+    // Update the state
+      setSavedArticles(newArticles);}).catch((err) => console.log(err)).finally(() => {
+  });
+  // my api
   // DELETE /articles/articleId
 }
 
@@ -412,6 +481,8 @@ function onCardDelete (card) {
     onCardSave={onCardSave}
     onCardDelete={onCardDelete}
     cardsToShow={cardsToShow}
+
+    keyword={keyword}
     />
     </Route>
 
@@ -425,9 +496,14 @@ function onCardDelete (card) {
       setMobileMenuActive={setMobileMenuActive}
       isMobileMenuIcon={isMobileMenuIcon}
       setMobileMenuIcon={setMobileMenuIcon}
-      articleNumber={articleNumber}
+      // articleNumber={articleNumber}
       keywordArray={keywordArray}
-      newsCards={newsCards}
+      keyword={keyword}
+      // newsCards={newsCards}
+      savedArticles={savedArticles}
+      setSavedArticles={setSavedArticles}
+
+      curUser={testUser._id}
       />
     </Route>
   </Switch>

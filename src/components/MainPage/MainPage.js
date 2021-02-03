@@ -35,7 +35,7 @@ function MainPage (props) {
         { props.isErrorMessage && <ErrorMessage isErrorMessage={props.isErrorMessage}/>}
 
         { (!props.isNotFound && !props.isErrorMessage && props.newsCards.length ) ?
-          <SearchResult loggedIn={props.loggedIn} newsCards={props.newsCards} isMainPage={props.isMainPage} cardsToShow={props.cardsToShow} onCardSave={props.onCardSave} onCardDelete={props.onCardDelete} onShowMore={props.onShowMore} />
+          <SearchResult loggedIn={props.loggedIn} newsCards={props.newsCards} isMainPage={props.isMainPage} cardsToShow={props.cardsToShow} onCardSave={props.onCardSave} onCardDelete={props.onCardDelete} onShowMore={props.onShowMore} keyword={props.keyword} />
          : null
         }
       </main>

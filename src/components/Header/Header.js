@@ -57,7 +57,7 @@ function Header (props) {
         </ul>
         {
           props.loggedIn ?
-            <Button btnStyle={`${btnStyleLogin} ${!props.isMainPage && btnThemeLight}` } onClick={props.onLogoutBtn}>{currentUser.username}</Button>
+            <Button btnStyle={`${btnStyleLogin} ${!props.isMainPage && btnThemeLight}` } onClick={props.onLogoutBtn}>{currentUser.name}</Button>
             :
             <Button btnStyle={`${btnStyleLogout} ${!props.isMainPage && btnThemeLight}` } onClick={props.onLoginBtn}>Sign in</Button>
         }
