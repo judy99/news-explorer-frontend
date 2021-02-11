@@ -8,6 +8,7 @@ import {mainApi} from '../../utils/MainApi.js';
 import ArticlePage from '../ArticlePage/ArticlePage.js';
 import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 import Footer from '../Footer/Footer.js';
+
 import { MIN_LENGTH_NAME, MIN_LENGTH_PASSWORD } from '../../utils/consts.js';
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
   const [isPopup, setPopup] = React.useState(isSingInPopup || isSingUpPopup || isRegistrationPopup);
   const [isSearching, setSearching] = React.useState(false);
   const [isNotFound, setNotFound] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   // const [username, setUsername] = React.useState('');
   const [nameInputError, setNameInputError] = React.useState('');
   const [emailInputError, setEmailInputError] = React.useState('');
@@ -70,85 +72,40 @@ function App() {
   // image — a link to the image for the article (string, required, must be a URL address).
   // owner — the _id of the user who saved the article. You need to set the default behavior so that the database doesn't return this field.
 
-  // const NewsEmpty = [];
+  // React.useEffect(() => {
+  //   if (isLoading) {
+  //     return <Spinner />
+  //   }
+  // }, [isLoading]
+  // );
 
-  // const News = [
-  //   {
-  //     _id: 1,
-  //     keyword: 'Nature',
-  //     date: 'November 4, 2020',
-  //     title: 'Everyone Needs a Special "Sit Spot" in Nature',
-  //     text: 'Ever since I read Richard Louv\'s influential book, "Last Child in the Woods," the idea of having a special "sit spot" has stuck with me. This advice, which Louv attributes to nature educator Jon Young, is for both adults and children to find',
-  //     source: 'treehugger',
-  //     link: 'https://images.unsplash.com/photo-1590013330451-3946e83e0392',
-  //     owner: [1,2,3],
-  //   },
-  //   {
-  //     _id: 2,
-  //     keyword: 'Nature',
-  //     date: 'November 5, 2020',
-  //     title: 'Nature makes you better',
-  //     text: 'We all know how good nature can make us feel. We have known it for millennia: the sound of the ocean, the scents of a forest, the way dappled sunlight dances through leaves.',
-  //     source: 'national geographic',
-  //     link: '/static/media/image_08.f7744e35.jpg',
-  //     owner: [1,2,3],
-  //
-  //   },
-  //   {
-  //     _id: 3,
-  //     keyword: 'Park',
-  //     date: 'November 6, 2020',
-  //     title: 'Nostalgic Photos of Tourists in U.S. National Parks',
-  //     text: 'Uri Løvevild Golman and Helle Løvevild Golman are National Geographic Explorers and conservation photographers who just completed a project and book they call their love letter to...',
-  //     source: 'national geographic',
-  //     link: 'https://images.unsplash.com/photo-1519331379826-f10be5486c6f',
-  //     owner: [1],
-  //
-  //   },
-  //   {
-  //     _id: 4,
-  //     keyword: 'Nature',
-  //     date: 'November 7, 2020',
-  //     title: 'Grand Teton Renews Historic Crest Trail',
-  //     text: '“The linking together of the Cascade and Death Canyon trails, at their heads, took place on October 1, 1933, and marked the first step in the realization of a plan whereby the hiker will be...',
-  //     source: 'National parks traveler',
-  //     link: 'https://images.unsplash.com/photo-1508007226633-b7de6a10cb16',
-  //     owner: [2],
-  //
-  //   },
-  //   {
-  //   _id: 5,
-  //   keyword: 'Birds',
-  //   date: 'March 16, 2020',
-  //   title: 'Scientists Don\'t Know Why Polaris Is So Weird ',
-  //   text: 'Humans have long relied on the starry sky to push into new frontiers, sail to the very edge of the world and find their way back home again. Even animals look to the stars to guide them. ',
-  //   source: 'treehugger',
-  //   link: '/static/media/image_08.f7744e35.jpg',
-  //   owner: [1],
-  // },
-  //
-  // ];
-
-  // mainApi.getSavedArticles(testUser._id).then((res) => {
-  //       console.log('res saved articles: ', typeof res);
-  //       console.log('res saved articles: ', res);
-  //       setSavedArticles(res);
-  //     })
-  //     .catch((err) => console.log(err));
-  //
-  //   console.log('SavedArticles: ', savedArticles);
-
+React.useEffect(() => {
 // get all saved articles at first rendering
+    // setIsLoading(true);
+    if (loggedIn) {
+      mainApi.getSavedArticles(testUser._id).then((res) => {
+        console.log('res saved articles: ', res);
+        setSavedArticles(res);
+        // setKeywordArray(res.map((item) => item.keyword));
+      })
+      .catch((err) => console.log(err)
+      // .finally(() => setIsLoading(false))
+    );
+    }
+}, [testUser._id, loggedIn]);
+
   React.useEffect(() => {
-    mainApi.getSavedArticles(testUser._id).then((res) => {
-      console.log('res saved articles: ', typeof res);
-      console.log('res saved articles: ', res);
-      setSavedArticles(res);
-      console.log('SavedArticles: ', savedArticles);
-    })
-    .catch((err) => console.log(err)
-  );
-}, []);
+    if (loggedIn) {
+      const keywords = savedArticles.map((item) => item.keyword.toLowerCase());
+      const uniqueKeywords = [...new Set(keywords)];
+      setKeywordArray(uniqueKeywords);
+      console.log('keywordArray:::', uniqueKeywords);
+    }
+  }, [savedArticles]);
+
+  React.useEffect(() => {
+    setNewsCards([]);
+  }, [isMainPage, loggedIn]);
 
 
 // logout the website
@@ -254,9 +211,15 @@ function App() {
   React.useEffect( () => setPopup(isSingInPopup || isSingUpPopup || isRegistrationPopup)
 , [isSingInPopup, isSingUpPopup, isRegistrationPopup]);
 
-React.useEffect(() => {
-  setKeywordArray(...keywordArray, keyword);
-}, [keyword]);
+// React.useEffect(() => {
+//   console.log('keyword array in useEffect App', keywordArray);
+//   if (loggedIn) {
+//     if (keyword !== '') {
+//       keywordArray.every((item) => item !== keyword);
+//       setKeywordArray(...keywordArray, keyword);
+//     }
+//   }
+// }, [savedArticles]);
 
 // click link on popup
   function handleClickLinkSignup () {
@@ -285,12 +248,11 @@ React.useEffect(() => {
 // click to search by keyword
   function handleSubmitSearch (e) {
     e.preventDefault();
-
     if (searchInput !== '') {
       setSearching(true);
       setSearchInputError('');
       // ???
-      setKeyword(searchInput);
+      // setKeyword(searchInput);
 
 
       let currentDate = new Date();
@@ -306,6 +268,7 @@ React.useEffect(() => {
         if (res.articles.length !== 0) {
           const result = res.articles.map((item) => {
             return {
+              author: item.author,
               title: item.title,
               text: item.content,
               date: item.publishedAt,
@@ -318,9 +281,11 @@ React.useEffect(() => {
           // setNewsCards(res.articles);
           setNewsCards(result);
           setNotFound(false);
+          setKeyword(searchInput);
         } else {
           setSearching(false);
           setNotFound(true);
+          // setKeyword('');
         }
         setErrorMessage('');
       })
@@ -331,6 +296,7 @@ React.useEffect(() => {
         })
         .finally(() => {
           setSearching(false);
+          // setKeyword('');
       });
     } else {
       setSearchInputError('Please enter a keyword');
@@ -397,10 +363,6 @@ React.useEffect(() => {
 // click on flag icon
 function onCardSave (article) {
   console.log('article', article);
-  console.log('article keyword: ', article.keyword);
-  console.log('article titile: ', article.title);
-  console.log('article owner: ', article.owner);
-  console.log('article date: ', article.date);
 
   // console.log('article: ', typeof (article));
   // const {keyword, title, text, date, source, link, image, owner} = article;
@@ -416,14 +378,17 @@ function onCardSave (article) {
 
 // click on trash can icon
 function onCardDelete (article) {
+  setIsLoading(true);
     mainApi.removeArticle(article._id).then(() => {
+
     // Create a new array based on the existing one and removing a card from it
-      const newArticles = article.filter((c) => c._id !== article._id);
+      const newArticles = savedArticles.filter((art) => art._id !== article._id);
     // Update the state
-      setSavedArticles(newArticles);}).catch((err) => console.log(err)).finally(() => {
-  });
-  // my api
-  // DELETE /articles/articleId
+    console.log('article._id', article._id);
+      setSavedArticles(newArticles);
+    })
+    .catch((err) => console.log(err))
+    .finally(() => setIsLoading(false))
 }
 
   return (
@@ -434,12 +399,14 @@ function onCardDelete (article) {
   <Route exact path='/'>
     <MainPage
     loggedIn={loggedIn}
+    isLoading={isLoading}
     onLoginBtn={handleLoginBtn}
     onLogoutBtn={handleLogoutBtn}
     onLogin={handleLogin}
     newsCards={newsCards}
     // newsCards={News}
     isMainPage={isMainPage}
+    setMainPage={setMainPage}
     isSingInPopup={isSingInPopup}
     isSingUpPopup={isSingUpPopup}
     onPopupClose={handlePopupClose}
@@ -483,6 +450,8 @@ function onCardDelete (article) {
     cardsToShow={cardsToShow}
 
     keyword={keyword}
+    savedArticles={savedArticles}
+    setSavedArticles={setSavedArticles}
     />
     </Route>
 
@@ -490,18 +459,22 @@ function onCardDelete (article) {
       { !loggedIn && <Redirect to='/' /> }
       <ArticlePage
       loggedIn={loggedIn}
+      isLoading={isLoading}
       onLogoutBtn={handleLogoutBtn}
-      isMainPage={!isMainPage}
+      isMainPage={isMainPage}
+      setMainPage={setMainPage}
       isMobileMenuActive={isMobileMenuActive}
       setMobileMenuActive={setMobileMenuActive}
       isMobileMenuIcon={isMobileMenuIcon}
       setMobileMenuIcon={setMobileMenuIcon}
+      setKeywordArray={setKeywordArray}
       // articleNumber={articleNumber}
       keywordArray={keywordArray}
       keyword={keyword}
       // newsCards={newsCards}
       savedArticles={savedArticles}
       setSavedArticles={setSavedArticles}
+      onCardDelete={onCardDelete}
 
       curUser={testUser._id}
       />

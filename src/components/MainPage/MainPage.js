@@ -6,11 +6,17 @@ import PopupSignIn from '../PopupSignIn/PopupSignIn.js';
 import PopupSignUp from '../PopupSignUp/PopupSignUp.js';
 import PopupInfo from '../PopupInfo/PopupInfo.js';
 import Preloader from '../Preloader/Preloader.js';
+import Spinner from '../Spinner/Spinner.js';
+
 import NotFound from '../NotFound/NotFound.js';
 import ErrorMessage from '../ErrorMessage/ErrorMessage.js';
 import './MainPage.css';
 
 function MainPage (props) {
+  React.useEffect(() => {
+    props.setMainPage(true);
+  }, []);
+
 
   return (
     <>
@@ -30,12 +36,17 @@ function MainPage (props) {
       setSearchInputError={props.setSearchInputError} />
 
       <main className='main'>
+        { props.isLoading && <Spinner /> }
         { props.isSearching && <Preloader /> }
-        { props.isNotFound && <NotFound />}
+        { props.isNotFound && <NotFound title='Nothing found' text='Sorry, but nothing matched your search terms.'/>}
         { props.isErrorMessage && <ErrorMessage isErrorMessage={props.isErrorMessage}/>}
 
         { (!props.isNotFound && !props.isErrorMessage && props.newsCards.length ) ?
-          <SearchResult loggedIn={props.loggedIn} newsCards={props.newsCards} isMainPage={props.isMainPage} cardsToShow={props.cardsToShow} onCardSave={props.onCardSave} onCardDelete={props.onCardDelete} onShowMore={props.onShowMore} keyword={props.keyword} />
+          <SearchResult loggedIn={props.loggedIn} newsCards={props.newsCards}
+          isMainPage={props.isMainPage} cardsToShow={props.cardsToShow}
+          onCardSave={props.onCardSave} onCardDelete={props.onCardDelete}
+          onShowMore={props.onShowMore} keyword={props.keyword}
+          savedArticles={props.savedArticles} setSavedArticles={props.setSavedArticles} />
          : null
         }
       </main>
