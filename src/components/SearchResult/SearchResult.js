@@ -2,13 +2,10 @@ import React from 'react';
 import NewsCardList from '../NewsCardList/NewsCardList.js';
 import {Button} from '../Button/Button.js';
 import NewsCard from '../NewsCard/NewsCard.js';
-
-// import NotFound from '../NotFound/NotFound.js';
 import './SearchResult.css';
 
 function SearchResult (props) {
   const btnStyleShow = 'search-result__btn';
-  // const [isSaved, setIsSaved] = React.useState(false);
 
   return (
       <section className='search-results'>

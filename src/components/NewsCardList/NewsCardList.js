@@ -1,10 +1,7 @@
 import React from 'react';
-// import NewsCard from '../NewsCard/NewsCard.js';
-// import { MAX_PICS_MAINPAGE } from '../../utils/consts.js';
 import './NewsCardList.css';
 
 function NewsCardList (props) {
-  // const arrLength = props.isMainPage ? MAX_PICS_MAINPAGE : props.newsCards.length;
   return (
     <ul className='news'>
     {

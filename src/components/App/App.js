@@ -1,26 +1,24 @@
 import React, {useRef} from 'react';
-import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom';
+import { Route, Switch, BrowserRouter, Redirect, useHistory } from 'react-router-dom';
 import './App.css';
 import MainPage from '../MainPage/MainPage.js';
 import {newsApi} from '../../utils/NewsApi.js';
-import {mainApi} from '../../utils/MainApi.js';
+import MainApi from '../../utils/MainApi.js';
+import * as auth from '../../utils/auth.js';
 
 import ArticlePage from '../ArticlePage/ArticlePage.js';
 import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 import Footer from '../Footer/Footer.js';
 
 import { MIN_LENGTH_NAME, MIN_LENGTH_PASSWORD } from '../../utils/consts.js';
+import { httpStatusCode } from '../../utils/utils.js';
 
 function App() {
   const ARTICLES_TO_SHOW = 3;
   const MAX_ARTICLES_TO_GET = 20;
   const SEARCH_RANGE_IN_DAYS = 7;
 
-  const testUser = {
-  _id:"5fc56a42f9eb4b959febf0dd",
-  name:"test1",
-  email:"test1@mail.com",
-}
+  const DELAY_REDIRECT = 1000;
 
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [newsCards, setNewsCards] = React.useState(new Array(0));
@@ -29,6 +27,7 @@ function App() {
   const [cardsToShow, setCardsToShow] = React.useState(ARTICLES_TO_SHOW);
 
   const [currentUser, setCurrentUser] = React.useState({});
+  const [token, setToken] = React.useState('');
   const [isMainPage, setMainPage] = React.useState(true);
   const [isSingInPopup, setSignInPopup] = React.useState(false);
   const [isSingUpPopup, setSignUpPopup] = React.useState(false);
@@ -42,7 +41,6 @@ function App() {
   const [isSearching, setSearching] = React.useState(false);
   const [isNotFound, setNotFound] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-  // const [username, setUsername] = React.useState('');
   const [nameInputError, setNameInputError] = React.useState('');
   const [emailInputError, setEmailInputError] = React.useState('');
   const [passwordInputError, setPasswordInputError] = React.useState('');
@@ -50,6 +48,8 @@ function App() {
   const [nameInput, setNameInput] = React.useState('');
   const [passwordInput, setPasswordInput] = React.useState('');
   const [emailInput, setEmailInput] = React.useState('');
+
+  const [isRegestered, setIsRegistered] = React.useState(false);
 
   const [searchInput, setSearchInput] = React.useState('');
   const [searchInputError, setSearchInputError] = React.useState('');
@@ -59,40 +59,164 @@ function App() {
   const firstRender = useRef(true);
   const [isErrorMessage, setErrorMessage] = React.useState('');
 
-  // const [deleteCard, setDeleteCard] = React.useState(null);
+  const history = useHistory();
 
-  // const testUser1 = {id: 1, username: 'EliseTest1', login: 'elisetest1@test.com'};
+  const mainApi = new MainApi({
+  baseUrl: 'http://localhost:5000',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,
+  }
+});
 
-  // keyword — the word by which the articles are searched. A string, required field.
-  // title — an article title (string, required).
-  // text — the article text (string, required).
-  // date — the article date (string, required).
-  // source — the article source (string, required).
-  // link — a link to the article (string, required, must be a URL address).
-  // image — a link to the image for the article (string, required, must be a URL address).
-  // owner — the _id of the user who saved the article. You need to set the default behavior so that the database doesn't return this field.
+  // const currentUser = React.useContext(CurrentUserContext);
 
   // React.useEffect(() => {
-  //   if (isLoading) {
-  //     return <Spinner />
+  //     if (loggedIn && token)
+  //     {
+  //       setIsLoading(true);
+  //       mainApi.getUserInfo()
+  //       .then((data) => {
+  //         // console.log('data from getUserInfo: ', data);
+  //         setCurrentUser(data);
+  //         // console.log('current user is0000 : ', currentUser);
+  //         // setCards(data[0]);
+  //       })
+  //       .catch((err) => console.log(err))
+  //       .finally(() => setIsLoading(false))
   //   }
-  // }, [isLoading]
-  // );
+  // }, [token, loggedIn]);
+
+
+
+// *** auth copy
+function handleSignup(email, password, name) {
+    auth.register(email, password, name)
+    .then((res) => {
+      console.log('register res:', res);
+      if (res instanceof Error) {
+        if (res.message === String(httpStatusCode.BAD_REQUEST)) {
+          setIsRegistered(false);
+          setFormError('This email is not available');
+          throw new Error('One of the fields was filled in incorrectly');
+        }
+      else {
+        // setFormError('');
+        setSignUpPopup(false);
+        setRegistrationPopup(true);
+        setRegistrationSuccess(true);
+        setIsRegistered(true);
+        return res;
+      }
+  }
+})
+    .then((res) => {
+      console.log('sign up', res);
+      if (!(res instanceof Error)) {
+        setTimeout(() => {
+          handlePopupClose();
+          // history.push('/signin');
+        }, DELAY_REDIRECT);
+      }
+    })
+    .catch((err) => console.log(err))
+    .finally(() => setFormError(''));
+}
+
+function handleLogin(email, password) {
+  setIsLoading(true);
+  auth.authorize(email, password)
+  .then((data) => {
+    console.log('user data after login', data);
+      if (data instanceof Error) {
+        setLoggedIn(false);
+        if (data.message === String(httpStatusCode.BAD_REQUEST))
+          throw new Error('One or more of the fields were not provided.');
+        if (data.message === String(httpStatusCode.UNAUTHORIZED))
+          throw new Error('The user with the specified email not found.');
+      }
+      else if (data.token) {
+        localStorage.setItem('jwt', data.token);
+        setLoggedIn(true);
+        setToken(data.token);
+        // console.log('token after sign in', token);
+        // setCurrentUser({ _id, email, name });
+        // setUsername(username);
+        handlePopupClose();
+        // history.push("/");
+        return;
+      } else {
+        console.log('no token yet. need to go to user data');
+      }
+  })
+  .catch((err) => console.log(err))
+  .finally(() => setIsLoading(false));
+}
 
 React.useEffect(() => {
-// get all saved articles at first rendering
-    // setIsLoading(true);
+  const jwt = localStorage.getItem('jwt');
+  console.log('jwt', jwt);
+  if (jwt) {
+        setIsLoading(true);
+        auth.getContent(jwt)
+        .then((res) => {
+          if (res instanceof Error) {
+            if (res.message === String(httpStatusCode.UNAUTHORIZED))
+              throw new Error('The provided token is invalid.');
+          }
+            setLoggedIn(true);
+            setCurrentUser(res);
+            setToken(jwt);
+            console.log('current user in jwt: ', currentUser);
+          })
+        // .then(() => history.push('/'))
+        .catch((err) => console.log(err))
+        .finally(() => setIsLoading(false))
+  }
+  else {
+    // history.push('/signin');
+    setIsLoading(false);
+    console.log('no logged user ');
+  }
+}, []);
+
+// after change token get usef info
+React.useEffect(() => {
     if (loggedIn) {
-      mainApi.getSavedArticles(testUser._id).then((res) => {
-        console.log('res saved articles: ', res);
-        setSavedArticles(res);
-        // setKeywordArray(res.map((item) => item.keyword));
+      // trying to get current user
+      console.log('************* trying to get current user with token', token);
+      auth.getContent(localStorage.getItem('jwt'))
+      .then((user) => {
+        console.log('user is: ', user);
+        setCurrentUser(user);
       })
       .catch((err) => console.log(err)
-      // .finally(() => setIsLoading(false))
     );
-    }
-}, [testUser._id, loggedIn]);
+  } else {
+    console.log('token=', token);
+  }
+}, [loggedIn]);
+
+// get all saved articles after having currentUser
+React.useEffect(() => {
+    // setIsLoading(true);
+    if (loggedIn) {
+      console.log('before getting saved articles');
+      console.log('useEffect current user = ', currentUser);
+      console.log('useEffect id = ', currentUser._id);
+
+      mainApi.getSavedArticles(currentUser._id)
+      .then((res) => {
+        console.log('res saved articles: ', res);
+        setSavedArticles(res);
+      })
+      .catch((err) => console.log(err)
+    );
+  } else {
+    console.log('no saved articles');
+  }
+}, [currentUser]);
 
   React.useEffect(() => {
     if (loggedIn) {
@@ -110,10 +234,13 @@ React.useEffect(() => {
 
 // logout the website
   function handleLogoutBtn () {
-    setLoggedIn(false);
-    setCurrentUser(null);
+    localStorage.removeItem('jwt');
     setMobileMenuActive(false);
     setMobileMenuIcon(true);
+    setLoggedIn(false);
+    setCurrentUser({});
+    setNewsCards([]);
+    // history.push('/');
   };
 
 // open sign in popup
@@ -125,13 +252,13 @@ React.useEffect(() => {
   };
 
 // login to the website
-  function handleLogin () {
-    handlePopupClose();
-    setMobileMenuActive(false);
-    setMobileMenuIcon(true);
-    setLoggedIn(true);
-    setCurrentUser(testUser);
-  }
+  // function handleLogin () {
+    // handlePopupClose();
+    // setMobileMenuActive(false);
+    // setMobileMenuIcon(true);
+    // setLoggedIn(true);
+    // setCurrentUser(currentUser);
+  // }
 
 
   function handlePopupClose () {
@@ -146,6 +273,7 @@ React.useEffect(() => {
     setNameInput('');
     setNameInputError('');
     setSubmitBtnState(false);
+    setFormError('');
   }
 
   const validateName = (input) => {
@@ -179,7 +307,7 @@ React.useEffect(() => {
   }
 
   function handleChangeUsername (e) {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     if (validateName(e.target.value)) {
       setNameInput(e.target.value);
       setNameInputError('');
@@ -211,16 +339,6 @@ React.useEffect(() => {
   React.useEffect( () => setPopup(isSingInPopup || isSingUpPopup || isRegistrationPopup)
 , [isSingInPopup, isSingUpPopup, isRegistrationPopup]);
 
-// React.useEffect(() => {
-//   console.log('keyword array in useEffect App', keywordArray);
-//   if (loggedIn) {
-//     if (keyword !== '') {
-//       keywordArray.every((item) => item !== keyword);
-//       setKeywordArray(...keywordArray, keyword);
-//     }
-//   }
-// }, [savedArticles]);
-
 // click link on popup
   function handleClickLinkSignup () {
     handlePopupClose();
@@ -251,9 +369,6 @@ React.useEffect(() => {
     if (searchInput !== '') {
       setSearching(true);
       setSearchInputError('');
-      // ???
-      // setKeyword(searchInput);
-
 
       let currentDate = new Date();
 
@@ -278,14 +393,12 @@ React.useEffect(() => {
              }
           });
 
-          // setNewsCards(res.articles);
           setNewsCards(result);
           setNotFound(false);
           setKeyword(searchInput);
         } else {
           setSearching(false);
           setNotFound(true);
-          // setKeyword('');
         }
         setErrorMessage('');
       })
@@ -337,8 +450,6 @@ React.useEffect(() => {
       return ((passwordInputError !== '' || emailInputError !== '' || nameInputError !== '') || (passwordInput === '' || emailInput === '' || nameInput === ''));
     }
 
-
-
     if (isSingUpPopup) {
       if (validateSignUpForm()) {
         setSubmitBtnState(false);
@@ -364,8 +475,6 @@ React.useEffect(() => {
 function onCardSave (article) {
   console.log('article', article);
 
-  // console.log('article: ', typeof (article));
-  // const {keyword, title, text, date, source, link, image, owner} = article;
   mainApi.addArticle(article).then((res) => {
     console.log('res article: ', res);
     setSavedArticles([...savedArticles, res]);
@@ -402,9 +511,8 @@ function onCardDelete (article) {
     isLoading={isLoading}
     onLoginBtn={handleLoginBtn}
     onLogoutBtn={handleLogoutBtn}
-    onLogin={handleLogin}
+    // onLogin={handleLogin}
     newsCards={newsCards}
-    // newsCards={News}
     isMainPage={isMainPage}
     setMainPage={setMainPage}
     isSingInPopup={isSingInPopup}
@@ -452,6 +560,10 @@ function onCardDelete (article) {
     keyword={keyword}
     savedArticles={savedArticles}
     setSavedArticles={setSavedArticles}
+
+    handleSignup={ () => handleSignup(emailInput, passwordInput, nameInput) }
+    handleLogin={ () => handleLogin(emailInput, passwordInput) }
+
     />
     </Route>
 
@@ -468,15 +580,13 @@ function onCardDelete (article) {
       isMobileMenuIcon={isMobileMenuIcon}
       setMobileMenuIcon={setMobileMenuIcon}
       setKeywordArray={setKeywordArray}
-      // articleNumber={articleNumber}
       keywordArray={keywordArray}
       keyword={keyword}
-      // newsCards={newsCards}
       savedArticles={savedArticles}
       setSavedArticles={setSavedArticles}
       onCardDelete={onCardDelete}
 
-      curUser={testUser._id}
+      // curUser={testUser._id}
       />
     </Route>
   </Switch>

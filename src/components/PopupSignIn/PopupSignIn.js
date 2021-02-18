@@ -15,7 +15,7 @@ function PopupSignIn(props) {
       title = {popupTitle}
       linkName = {popupBottomLink}
       onClickLink = {props.handleClickLinkSignup}
-      onSubmit = {props.onLogin}
+      onSubmit = {props.handleLogin}
       submitBtnState={props.submitBtnState}
       handleChangeEmail={props.handleChangeEmail}
       handleChangePassword={props.handleChangePassword}

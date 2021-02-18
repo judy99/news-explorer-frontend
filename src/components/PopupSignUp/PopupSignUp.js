@@ -15,14 +15,15 @@ function PopupSignUp(props) {
       name={popupName} title={popupTitle}
       linkName={popupBottomLink}
       onClickLink={props.handleClickLinkSignin}
-      onSubmit={props.handleRegistration}
+      onSubmit = { props.handleSignup }
       submitBtnState={props.submitBtnState}
       emailInputError={props.emailInputError}
       passwordInputError={props.passwordInputError}
       nameInputError={props.nameInputError}
       handleChangeEmail={props.handleChangeEmail}
       handleChangePassword={props.handleChangePassword}
-      handleChangeUsername={props.handleChangeUsername} >
+      handleChangeUsername={props.handleChangeUsername}
+      formError = {props.formError} >
 
       <FormField nameField='email' typeField='signup' handleChange={props.handleChangeEmail} inputError={props.emailInputError} />
       <FormField nameField='password' typeField='signup' handleChange={props.handleChangePassword} inputError={props.passwordInputError} />

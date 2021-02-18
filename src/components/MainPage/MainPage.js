@@ -11,8 +11,11 @@ import Spinner from '../Spinner/Spinner.js';
 import NotFound from '../NotFound/NotFound.js';
 import ErrorMessage from '../ErrorMessage/ErrorMessage.js';
 import './MainPage.css';
+import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 
 function MainPage (props) {
+  const currentUser = React.useContext(CurrentUserContext);
+
   React.useEffect(() => {
     props.setMainPage(true);
   }, []);
@@ -33,7 +36,8 @@ function MainPage (props) {
       searchInputError={props.searchInputError}
       handleChangeSearch={props.handleChangeSearch}
       searchInput={props.searchInput}
-      setSearchInputError={props.setSearchInputError} />
+      setSearchInputError={props.setSearchInputError}
+       />
 
       <main className='main'>
         { props.isLoading && <Spinner /> }
@@ -56,7 +60,9 @@ function MainPage (props) {
         <PopupSignIn
         onPopupClose={props.onPopupClose}
         handleClickLinkSignup={props.handleClickLinkSignup}
-        onLogin={props.onLogin}
+        // onLogin={props.onLogin}
+        handleLogin={props.handleLogin}
+
         submitBtnState={props.submitBtnState}
         setSubmitBtnState = {props.setSubmitBtnState}
 
@@ -75,11 +81,12 @@ function MainPage (props) {
         <PopupSignUp
         onPopupClose={props.onPopupClose}
         handleClickLinkSignin={props.handleClickLinkSignin}
-        handleRegistration={props.handleRegistration}
+        handleSignup={props.handleSignup}
         submitBtnState={props.submitBtnState}
         emailInputError={props.emailInputError}
         passwordInputError={props.passwordInputError}
         nameInputError={props.nameInputError}
+        formError={props.formError}
 
         emailInput={props.emailInput}
         passwordInput={props.passwordInput}

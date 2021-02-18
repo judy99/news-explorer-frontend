@@ -1,4 +1,4 @@
-export class MainApi {
+export default class MainApi {
   constructor({
     baseUrl,
     headers
@@ -81,8 +81,3 @@ export class MainApi {
       });
   }
 }
-
-export const mainApi = new MainApi({
-  baseUrl: 'http://localhost:5000',
-  headers: {'Content-Type': 'application/json'}
-});

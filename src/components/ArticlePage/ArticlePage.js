@@ -2,9 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Header from '../Header/Header.js';
 import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader.js';
 import SavedNews from '../SavedNews/SavedNews.js';
-import Spinner from '../Spinner/Spinner.js';
 import './ArticlePage.css';
-import {mainApi} from '../../utils/MainApi.js';
 
 function ArticlePage(props) {
 
@@ -31,7 +29,6 @@ function ArticlePage(props) {
        />
 
       <main className='main'>
-
         <SavedNews
         onCardDelete={props.onCardDelete}
         isMainPage={props.isMainPage}

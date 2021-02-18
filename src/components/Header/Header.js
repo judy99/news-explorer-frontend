@@ -20,7 +20,10 @@ function Header (props) {
     props.setMobileMenuActive(false);
   }
 
+  // console.log('current user in header email:', currentUser.email);
+
   return (
+
   <header className={`header
     ${!props.isMainPage && ' articles-page__header'}
     ${(!props.isMainPage && props.isMobileMenuActive) && ' articles-page__header_active'}`}
@@ -57,7 +60,7 @@ function Header (props) {
         </ul>
         {
           props.loggedIn ?
-            <Button btnStyle={`${btnStyleLogin} ${!props.isMainPage && btnThemeLight}` } onClick={props.onLogoutBtn}>{currentUser.name}</Button>
+            <Button btnStyle={`${btnStyleLogin} ${!props.isMainPage && btnThemeLight}` } onClick={props.onLogoutBtn}>{currentUser.email}</Button>
             :
             <Button btnStyle={`${btnStyleLogout} ${!props.isMainPage && btnThemeLight}` } onClick={props.onLoginBtn}>Sign in</Button>
         }

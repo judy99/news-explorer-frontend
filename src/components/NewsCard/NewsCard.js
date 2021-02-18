@@ -5,20 +5,7 @@ import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 
 function NewsCard (props) {
   const [saved, setSaved] = React.useState(false);
-  // const [deleted, setDeleted]= React.useState(false);
-
-  // const [title, keyword, owner, text, date, source, link, image] =
-  //   { props.card.title, props.keyword, "5fc56a42f9eb4b959febf0dd", props.card.content,
-  //     props.card.publishedAt, props.card.source.name, props.card.url, props.card.urlToImage }
-  // React.useEffect(() => {
-  //     props.savedArticles.some((element) => {
-  //       if (element.link === props.card.link) {
-  //         setSaved(true);
-  //       } else {
-  //         setSaved(false);
-  //       }
-  //     });
-  // }, []);
+  const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
     if (props.loggedIn && props.savedArticles.length) {
@@ -29,15 +16,12 @@ function NewsCard (props) {
   const onSave = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log('e onSave click: ', e);
-    console.log('saved1 = ', props.saved);
 
     if (props.loggedIn && !saved) {
-      // props.onCardSave(props.card);
       props.onCardSave({
           title: props.card.title,
           keyword: props.keyword,
-          owner: '5fc56a42f9eb4b959febf0dd',
+          owner: currentUser._id,
           text: props.card.text,
           date: props.card.date,
           source: props.card.source,
@@ -48,22 +32,15 @@ function NewsCard (props) {
     } else
 
     if (props.loggedIn && saved) {
-      console.log('on delete on flag ', props.card);
-      console.log('saved arr after unsaved: ', props.savedArticles.filter(item => item.link !== props.card.link));
       props.setSavedArticles(props.savedArticles.filter(item => item.link !== props.card.link));
-      // props.onCardDelete(props.card);
       setSaved(false);
     }
-
-    console.log('saved2 = ', saved);
-
   }
 
   const onDelete = (e) => {
     e.stopPropagation();
     e.preventDefault();
     setSaved(false);
-    // setDeleted(true);
     props.onCardDelete(props.card);
   }
 
